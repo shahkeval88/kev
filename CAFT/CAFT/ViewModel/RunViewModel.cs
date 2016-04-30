@@ -1,6 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CAFT.Model;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,20 +13,24 @@ namespace CAFT.ViewModel
     {
         public RunViewModel()
         {
-            this.Header = "Keval";
+            this.TrackList = new ObservableCollection<Road>();
+            this.TrackList.Add(new Road(500, 10));
+            this.TrackList.Add(new Road(500, 10));
         }
 
-        private string _Header;
 
-        public string Header
+        private ObservableCollection<Road> _TrackList;
+
+        public ObservableCollection<Road> TrackList
         {
-            get { return _Header; }
+            get { return _TrackList; }
             set 
             { 
-                _Header = value;
-                RaisePropertyChanged("Header");
+                _TrackList = value;
+                RaisePropertyChanged("TrackList");
             }
         }
+        
         
     }
 }

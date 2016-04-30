@@ -3,9 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CAFT.Helper"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Label Content="{Binding Header}"></Label>
+        <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+            <ScrollViewer Height="650" HorizontalScrollBarVisibility="Auto" Width="500" x:Name="MainScroll">
+                <ListBox ItemsSource="{Binding TrackList, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                            local:GridHelpers.RowCount="{Binding Length}"
+                            local:GridHelpers.ColumnCount="{Binding Width}">
+                                <Label Content="{Binding Length}"></Label>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>
