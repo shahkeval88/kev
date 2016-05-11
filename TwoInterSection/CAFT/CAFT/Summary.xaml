@@ -1,0 +1,100 @@
+﻿<Window x:Class="CAFT.Summary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        Title="Summary - Developed by ASHUTOSH K PATEL" WindowState="Maximized" Closing="Window_Closing">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnSpacePerTime" Width="100" Content="Time vs Space" Click="btnSpacePerTime_Click"></Button>
+                <Label Content="" x:Name="lblSpacePerTime" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnSpeedPerTime" Width="100" Content="Speed vs Time" Click="btnSpeedPerTime_Click"></Button>
+                <Label Content="" x:Name="lblSpeedPerTime" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnDensityPerTime" Width="100" Content="Density vs Time" Click="btnDensityPerTime_Click"></Button>
+                <Label Content="" x:Name="lblDensityPerTime" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnDensityPerSpeed" Width="100" Content="Density vs Speed" Click="btnDensityPerSpeed_Click"></Button>
+                <Label Content="" x:Name="lblDensityPerSpeed" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>
+                <Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>
+            </StackPanel>
+
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnVolumePerDensity" Width="100" Content="Volume vs Density" Click="btnVolumePerDensity_Click"></Button>
+                <Label Content="" x:Name="lblVolumePerDensity" Foreground="Green"></Label>
+            </StackPanel>
+
+            <Line Height="5"></Line>
+
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnTimeHeadway" Width="100" Content="TimeHeadway" Click="btnTimeHeadway_Click"></Button>
+                <Label Content="" x:Name="lblTimeHeadway" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <!--<Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>-->
+                <!--<Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>-->
+                <Button x:Name="btnSaturation" Width="100" Content="Saturation Flow" Click="btnSaturation_Click"></Button>
+                <Label Content="" x:Name="lblSaturation" Foreground="Green"></Label>
+            </StackPanel>
+
+
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <!--<Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>-->
+                <!--<Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>-->
+                <Button x:Name="btnNoiseProbFactor" Width="100" Content="Noise Probability Factor" Click="btnNoiseProbFactor_Click"></Button>
+                <Label Content="" x:Name="lblNoiseProbFactor" Foreground="Green"></Label>
+            </StackPanel>
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <!--<Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>-->
+                <!--<Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>-->
+                <Button x:Name="btnIntersectionHeadway" Width="140" Content="Intersection Headway" Click="btnIntersectionHeadway_Click"></Button>
+                <Label Content="" x:Name="lblIntersectionHeadway" Foreground="Green"></Label>
+            </StackPanel>
+
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <!--<Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>-->
+                <!--<Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>-->
+                <Button x:Name="btnIntersectionDelay" Width="140" Content="Intersection Delay" Click="btnIntersectionDelay_Click"></Button>
+                <Label Content="" x:Name="lblIntersectionDelay" Foreground="Green"></Label>
+            </StackPanel>
+
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                <!--<Button x:Name="btnVolumePerSpeed" Width="100" Content="Volume vs Speed" Click="btnVolumePerSpeed_Click"></Button>-->
+                <!--<Label Content="" x:Name="lblVolumePerSpeed" Foreground="Green"></Label>-->
+                <Button x:Name="btnIntersectionSummary" Width="140" Content="Intersection Summary" Click="btnIntersectionSummary_Click"></Button>
+                <Label Content="" x:Name="lblIntersectionSummary" Foreground="Green"></Label>
+            </StackPanel>
+
+            <Line Height="5"></Line>
+
+            <StackPanel Margin="25 0 0 10" Orientation="Horizontal">
+                <Button x:Name="btnExportToExcel" Content="Export to Excel" Width="150" Click="btnExportToExcel_Click"></Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

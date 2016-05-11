@@ -14,8 +14,13 @@ namespace CAFT.ViewModel
         public RunViewModel()
         {
             this.TrackList = new ObservableCollection<Road>();
-            this.TrackList.Add(new Road(500, 10));
-            this.TrackList.Add(new Road(500, 10));
+
+            Road r1 = new Road(50, 10);
+            this.TrackList.Add(r1);
+
+            r1.CellHighlighter = new CellHighlighterType[1];
+            r1.CellHighlighter[0] = new CellHighlighterType() { ColorCode = 1, RowNumber = 1, ColumnNumber = 1 };
+
         }
 
 
@@ -30,7 +35,6 @@ namespace CAFT.ViewModel
                 RaisePropertyChanged("TrackList");
             }
         }
-        
         
     }
 }

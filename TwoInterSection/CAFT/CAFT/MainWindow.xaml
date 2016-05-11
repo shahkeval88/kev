@@ -1,0 +1,119 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="CAFT.MainWindow"
+        Title="CAFT - Developed by ASHUTOSH K PATEL" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid d:IsLocked="True">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+                <Menu HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Bottom" Width="Auto" Background="LightGray">
+                    <MenuItem Header="Settings" FontWeight="ExtraBold" Click="Setings_Click"/>
+                </Menu>
+                <StackPanel Orientation="Horizontal" d:IsLocked="True">
+                    <ScrollViewer Height="650" HorizontalScrollBarVisibility="Auto" Width="500" x:Name="MainScroll" >
+                        <ItemsControl>
+                            <StackPanel Orientation="Horizontal">
+                                <!--<StackPanel>
+                                <Grid Margin="0,0,0,0" x:Name="MainGridLeft" d:IsLocked="True"/>
+                            </StackPanel>-->
+
+                                <StackPanel Orientation="Vertical">
+                                    <!--<Grid Margin="0,0,0,0" x:Name="MainGridTop" d:IsLocked="True"/>-->
+                                    <Grid Margin="0,0,0,0" x:Name="MainGrid" d:IsLocked="True"/>
+                                </StackPanel>
+
+                                <!--<StackPanel>
+                                <Grid Margin="0,0,0,0" x:Name="MainGridRight" d:IsLocked="True"/>
+                            </StackPanel>-->
+                            </StackPanel>
+                        </ItemsControl >
+                    </ScrollViewer>
+                    <StackPanel Orientation="Vertical" Margin="10" d:IsLocked="True">
+
+                        <StackPanel>
+
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Name="lblVhStatus_BL" Content="Vehicle Status - BottomLane" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInQueue_BL" Content="In Queue - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInProgress_BL" Content="In Progress - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblCompleted_BL" Content="Completed - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblTotal_BL" Content="Total Vehicles - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Name="lblVhStatus_LL" Content="Vehicle Status - Left Lane" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInQueue_LL" Content="In Queue - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInProgress_LL" Content="In Progress - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblCompleted_LL" Content="Completed - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblTotal_LL" Content="Total Vehicles - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Name="lblVhStatus_TL" Content="Vehicle Status - Top Lane" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInQueue_TL" Content="In Queue - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInProgress_TL" Content="In Progress - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblCompleted_TL" Content="Completed - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblTotal_TL" Content="Total Vehicles - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Name="lblVhStatus_RL" Content="Vehicle Status - Right Lane" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInQueue_RL" Content="In Queue - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblInProgress_RL" Content="In Progress - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblCompleted_RL" Content="Completed - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblTotal_RL" Content="Total Vehicles - " HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+
+                            <Label Name="lblTickCount" Content="Time (in seconds) - " FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                            <StackPanel Orientation="Vertical">
+                                <Label Name="lblVehicleProperties" Content="Vehicle Properties" FontWeight="SemiBold" FontStyle="Oblique"   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lbltwoWheeler" Content="Black - TwoWheeler" FontWeight="ExtraLight" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblthreeWheeler" Content="Yellow - Three Wheeler" FontWeight="ExtraLight" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblFourWheeler" Content="Red - Four Wheeler" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" FontStyle="Italic"/>
+                                <Label Name="lblLCV1" Content="Green - LCV1 " FontWeight="ExtraLight" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Label Name="lblLCV2" Content="YellowGreen - LCV2" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" FontStyle="Italic"/>
+                                <Label Name="lblHCV1" Content="Blue - HCV1" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" FontStyle="Italic"/>
+                                <Label Name="lblHCV2" Content="BlueViolet - HCV2" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" FontStyle="Italic"/>
+                            </StackPanel>
+
+
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <StackPanel Orientation="Vertical">
+                                <!--<Label Name="lblConsole" Width="100" ></Label>-->
+                                <Button x:Name="btnStart" Height="40" Width="150" Margin="10"  Content="Start" Click="Button_Start" d:IsLocked="True"/>
+                                <Button x:Name="btnLaneSignal" Height="40" Width="150" Margin="10"  Content="Signal-On" Click="Button_OnOff" d:IsLocked="True"/>
+                                <Button x:Name="btnLSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-B Signal-Off" Click="LSButton_OnOff" d:IsLocked="True"/>
+                                <Button x:Name="btnRSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-D Signal-Off" Click="RSButton_OnOff" d:IsLocked="True"/>
+                                <Button x:Name="btnTSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-C Signal-Off" Click="TSButton_OnOff" d:IsLocked="True"/>
+                                <Button x:Name="btnShowChart" Content="Show Chart" Height="40" Width="150" Margin="10" Click="btnShowChart_Click"></Button>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="20" Width="20" Margin="10,0,0,0" Stroke="Blue"></Rectangle>
+                                    <Label Content="Bump"></Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="20" Width="20" Margin="10,0,0,0" Stroke="Brown"></Rectangle>
+                                    <Label Content="Headway"></Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="2" Width="20" Margin="10,0,0,0" Stroke="Red"></Rectangle>
+                                    <Label Content="Signal"></Label>
+                                </StackPanel>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+</Window>

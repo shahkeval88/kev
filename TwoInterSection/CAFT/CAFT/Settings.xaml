@@ -1,0 +1,297 @@
+﻿<Window x:Class="CAFT.Settings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d"
+	Title="Settings - Developed by ASHUTOSH K PATEL" Width="1000" WindowStartupLocation="CenterOwner" WindowState="Maximized">
+
+    <Grid Margin="0,0,0,0">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" Height="Auto">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" d:IsLocked="True">
+                    <Grid Margin="20" x:Name="MainGrid" d:IsLocked="True"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Common Properties:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <StackPanel Visibility="Collapsed" Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="LaneSignal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
+                                <RadioButton Name="rdbSettings_On" Content="On"
+		     Checked="RadioButton_Checked"
+		     HorizontalAlignment="Left"
+		     Margin="10,10,0,0" IsChecked="True"
+		     VerticalAlignment="Top"/>
+                                <RadioButton Name="rdbSettings_Off" Content="Off"
+		     Checked="RadioButton_Checked"
+		     HorizontalAlignment="Left"
+		     Margin="10,10,0,0" IsChecked="False"
+		     VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="TimeStamp (in seconds)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
+                                <TextBox Name="txtSetting_TimeStamp" Width="80"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Headway (Row no)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
+                                <TextBox Name="txtSetting_Headway" Width="40"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Bump (Row no)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
+                                <TextBox Name="txtSetting_BumpLine" Width="40"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Area to cover before/after bump (mt)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="210"/>
+                                <TextBox Name="txtSetting_BumpArea" Width="40"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Distance to count Delay on Intersection (mt)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="250"/>
+                                <TextBox Name="txtSetting_DelayDistance" Width="40"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Total GridCounts" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto"/>
+                                <TextBox Name="txtSetting_GridCounts" Width="50"/>
+                                <Label Content="RoadWidth (in meter)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto"/>
+                                <TextBox Name="txtSetting_RoadWidth" Width="50"/>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Cell Size: (in meter)" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <Label Content="Height" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
+                                <TextBox Name="txtSetting_CellHeight" Width="30"/>
+                                <Label Content="Width" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
+                                <TextBox Name="txtSetting_CellWidth" Width="30"/>
+                                <Label Content="Pixels" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
+                                <TextBox Name="txtSetting_CellPixels" Width="30"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Noise Probability Factor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto"/>
+                                <TextBox Name="txtSetting_NoiseProbFactor" Width="50"/>
+                                <Label Content="(1 to 100)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Rectangle Height="1" Width="550" Fill="Black" ></Rectangle>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Include Auto Signal (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkAutoSignal" Click="chkAutoSignal_Checked" Margin="0 7 0 0"/>
+
+                                <Label Name="lblIntersectionSpeedZone1" Margin="30 0 0 0" Content="Speed Reduction Zone" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
+                                <TextBox Name="txtSetting_IntersectionSpeedZone" Width="30"/>
+                                <Label Name="lblIntersectionSpeedZone2" Content="mt" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical" Margin="10" d:IsLocked="True" x:Name="stSAutoGreen">
+                                    <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True">
+                                        <Label Content="Green Time - Bottom" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
+                                        <TextBox Name="txtSetting_AutoGreenTime_Bottom" Width="30"/>
+
+                                        <Label Content="Green Time - Left"  HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="110"/>
+                                        <TextBox Name="txtSetting_AutoGreenTime_Left" Width="30"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True" >
+                                        <Label Content="Green Time - Top" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
+                                        <TextBox Name="txtSetting_AutoGreenTime_Top" Width="30"/>
+
+                                        <Label Content="Green Time - Right" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="110"/>
+                                        <TextBox Name="txtSetting_AutoGreenTime_Right" Width="30"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True" >
+                                        <Label Content="Amber Time" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
+                                        <TextBox Name="txtSetting_CrossRoadSignalAmberTime" Width="30"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                        <Label Content="Staright % " Width="70"></Label>
+                                        <TextBox Name="txtSetting_PercentStaright" Width="30" ></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                        <Label Content="Right % " Width="70"></Label>
+                                        <TextBox Name="txtSetting_PercentRight" Width="30" ></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                        <Label Content="Left % " Width="70"></Label>
+                                        <TextBox Name="txtSetting_PercentLeft" Width="30" ></TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Include LEG-B traffic" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkLStraffic" Margin="0 7 0 0"/>
+                                <Label Content="Include LEG-D traffic" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkRStraffic" Margin="0 7 0 0"/>
+                                <Label Content="Include LEG-C traffic" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkTStraffic" Margin="0 7 0 0"/>
+                                <Label Content="Include LEG-A traffic" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkBStraffic" Margin="0 7 0 0"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Rectangle Height="1" Width="550" Fill="Black" ></Rectangle>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Include Vehicle Range" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                <CheckBox x:Name="chkVhRange" Margin="0 7 0 0" Click="chkVhRange_Checked"/>
+                                <Label Content="  From"></Label>
+                                <TextBox Name="txtSetting_vhRangeMin" Width="50" Margin="10 7 0 0"/>
+                                <Label Content="  To"></Label>
+                                <TextBox Name="txtSetting_VhRangeMax" Width="50" Margin="10 7 0 0"/>
+                                <Label Content="  at"></Label>
+                                <TextBox Name="txtSetting_VhRangeTime" Width="140" Margin="10 7 0 0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Include Bump" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+                                <CheckBox x:Name="chkbump" Margin="0 7 0 0"/>
+                                <Label Content="     /   "></Label>
+                                <Label Content="Include Signal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+                                <CheckBox x:Name="chkSignal" Click="chkSignal_Checked" Margin="0 7 0 0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSGreen">
+                                    <Label Content="Signal Green Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                    <TextBox Name="txtSetting_SGreenTime" Width="30"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSRed">
+                                    <Label Content="Signal Red Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                    <TextBox Name="txtSetting_SRedTime" Width="30"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSAmber">
+                                    <Label Content="Signal Amber Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                    <TextBox Name="txtSetting_SAmberTime" Width="30"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Vehicles: (Dimensions in meter)" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Content="(km / hr)" Margin="0 0 20 0" />
+                                <Label Content="(km / hr / s)" />
+                                <Label Content="Percentage" />
+                                <Label Content="Include" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Two Wheeler" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_2WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_2WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_2WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_2WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_2WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chk2Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Three Wheeler (Auto)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_3WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_3WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_3WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_3WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_3WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chk3Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Four Wheeler (Car)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_4WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_4WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_4WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_4WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_4WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chk4Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="LCV1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV1WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV1WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV1WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV1WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV1WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chkLCV1Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="LCV2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV2WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV2WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV2WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV2WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_LCV2WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chkLCV2Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="HCV1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV1WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV1WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV1WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV1WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV1WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chkHCV1Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="HCV2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                <Label Content="L" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV2WheelLength" Width="30" IsEnabled="False" />
+                                <Label Content="W" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV2WheelWidth" Width="30" IsEnabled="False" />
+                                <Label Content="Max Speed" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV2WheelAcc" Width="30"/>
+                                <Label Content="Acceleration" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV2WheelAccParam" Width="30"/>
+                                <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_HCV2WheelPercent" Width="30"/>
+                                <CheckBox Margin="40 0 0 0" x:Name="chkHCV2Wheel" ></CheckBox>
+                            </StackPanel>
+                            <StackPanel Visibility="Hidden" Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Vehicle Rules:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <StackPanel Visibility="Hidden" Orientation="Horizontal" Margin="10" d:IsLocked="True" >
+                                <Label Content="Rule 1: Vehicle Acceleration Gap (in cell)" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBox Name="txtSetting_AccelerationGap" Width="30" ToolTip="Note: vehicle will check minimum of mentioned cells free ahead of the vehicle before accelerating"/>
+                            </StackPanel>
+                            <StackPanel Visibility="Hidden" Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Rule 2: Vehicle Overtaking Gap (in cell)" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <TextBox Name="txtSetting_OvertakingGap" Width="30" ToolTip="Note: vehicle will check minimum of mentioned cells free on right/left lane ahead of the vehicle before overtaking"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel>
+                    <Button Name="btnSetting_Save" Content="Save Configurations" HorizontalAlignment="Left" Margin="50 10 0 10" VerticalAlignment="Top" Width="144" Click="btnSetting_Save_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

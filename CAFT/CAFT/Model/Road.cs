@@ -61,6 +61,7 @@ namespace CAFT.Model
         
         public CrossRoadType CrossRoadEnd { get; set; }
 
+        public CellHighlighterType[] CellHighlighter { get; set; }
         
 
         public Road(int length, int width)
