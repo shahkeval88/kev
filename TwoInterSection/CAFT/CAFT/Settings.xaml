@@ -37,10 +37,10 @@
                                 <Label Content="Headway (Row no)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
                                 <TextBox Name="txtSetting_Headway" Width="40"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                            <!--<StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
                                 <Label Content="Signal - 1 (Row on)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"/>
                                 <TextBox Name="txtSetting_BumpLine" Width="40"/>
-                            </StackPanel>
+                            </StackPanel>-->
                             <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
                                 <Label Content="Area to cover before/after bump (mt)"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="210"/>
                                 <TextBox Name="txtSetting_BumpArea" Width="40"/>
@@ -73,7 +73,7 @@
                             <StackPanel>
                                 <Rectangle Height="1" Width="550" Fill="Black" ></Rectangle>
                             </StackPanel>
-                            <ScrollViewer Height="200" HorizontalScrollBarVisibility="Auto" Width="500" x:Name="SettingSignalScroll">
+                            <ScrollViewer Height="300" HorizontalScrollBarVisibility="Auto" Width="500" x:Name="SettingSignalScroll">
                                 <ItemsControl>
                                     <!-- ==== First Signal Start == -->
                                     <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
@@ -81,26 +81,30 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
                                         <CheckBox x:Name="chkSignal" Click="chkSignal_Checked" Content="Include Signal - 1" Margin="0 7 0 0"/>
-                                        <Label Content="Select Leg for Start of Signal " Margin="20 0 5 0"></Label>
+                                        <Label x:Name="lblFirstSignalLeg" Content="Select Leg for Start of Signal " Margin="20 0 5 0"></Label>
                                         <ComboBox x:Name="cmbFirstSignalLeg"></ComboBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                        <Label Name="lblSetting_BumpLine" Content="Row No at Signal-1 needs to be placed"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="230"/>
+                                        <TextBox Name="txtSetting_BumpLine" Width="40"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Vertical" Margin="10" d:IsLocked="True" x:Name="stSAutoGreenSignal1">
-                                            <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True">
+                                            <StackPanel Name="stckSignal1" Orientation="Horizontal" Margin="5" d:IsLocked="True">
                                                 <Label Content="Green Time - Bottom" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
                                                 <TextBox Name="txtSetting_SGreenTime" Width="30"/>
 
                                                 <Label Content="Green Time - Left"  HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="110"/>
                                                 <TextBox Name="txtSetting_SGreenTimeLeft" Width="30"/>
                                             </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True" >
+                                            <StackPanel Name="stckSignal2" Orientation="Horizontal" Margin="5" d:IsLocked="True" >
                                                 <Label Content="Green Time - Top" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
                                                 <TextBox Name="txtSetting_SGreenTimeTop" Width="30"/>
 
                                                 <Label Content="Green Time - Right" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="110"/>
                                                 <TextBox Name="txtSetting_SGreenTimeRight" Width="30"/>
                                             </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="5" d:IsLocked="True" >
+                                            <StackPanel Name="stckSignal3" Orientation="Horizontal" Margin="5" d:IsLocked="True" >
                                                 <Label Content="Amber Time" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130"/>
                                                 <TextBox Name="txtSetting_SAmberTime" Width="30"/>
                                             </StackPanel>

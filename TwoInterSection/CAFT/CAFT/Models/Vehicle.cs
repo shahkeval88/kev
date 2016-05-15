@@ -100,6 +100,8 @@ namespace CAFT.Models
 
         public int IsStoppedForSignal { get; set; }
 
+        public int IsStoppedForSignalFirst { get; set; }
+
         public bool IsNoisy { get; set; }
 
     }

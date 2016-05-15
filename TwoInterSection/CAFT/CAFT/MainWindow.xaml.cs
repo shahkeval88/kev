@@ -482,15 +482,17 @@ namespace CAFT
                         //{
                         //    bd.BorderBrush = new SolidColorBrush(Colors.Red);
                         //}
-
-                        if ((j < ExtraRoadCells && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2))
-                            || (j > (TwoLaneColumnCount * 2) + ExtraRoadCells - 1 && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2)))
+                        if (CaftSettings.Default.signalInclude)
                         {
-                            bd.BorderBrush = new SolidColorBrush(Colors.Black);
-                        }
-                        if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
-                        {
-                            bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                            if ((j < ExtraRoadCells && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2))
+                                || (j > (TwoLaneColumnCount * 2) + ExtraRoadCells - 1 && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2)))
+                            {
+                                bd.BorderBrush = new SolidColorBrush(Colors.Black);
+                            }
+                            if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
+                            {
+                                bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                            }
                         }
                     }
                     else
@@ -513,19 +515,21 @@ namespace CAFT
 
                         }
 
-                        if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
+                        if (CaftSettings.Default.signalInclude)
                         {
-                            if (j == ((tempGridColumnCount / 2) - 1))
+                            if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
                             {
-                                bd.BorderThickness = new Thickness(0.3, 2, 2, 0.3);
-                            }
-                            else
-                            {
-                                bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
-                            }
-                            
-                        }
+                                if (j == ((tempGridColumnCount / 2) - 1))
+                                {
+                                    bd.BorderThickness = new Thickness(0.3, 2, 2, 0.3);
+                                }
+                                else
+                                {
+                                    bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                                }
 
+                            }
+                        }
                         //Setting color of bump to make it visible to user
                         //if (CaftSettings.Default.bumpInclude)
                         //{
@@ -741,6 +745,12 @@ namespace CAFT
 
         private void ProcessSignalOne()
         {
+            if (!CaftSettings.Default.signalInclude)
+            {
+                globalVariables.LaneSignalOnFirst = true;
+                btnLaneSignalFirstDisplay.Visibility = System.Windows.Visibility.Hidden;
+                return;
+            }
             int tick = globalVariables.TickCount + 1;
             int greenBottom = CaftSettings.Default.GreenSignalTime;
             int greenLeft = CaftSettings.Default.GreenSignalTimeLeft;

@@ -1209,13 +1209,14 @@ namespace CAFT
             }
 
 
-            MyExcel.Cells[1, 1] = "Vehicle No";
+            MyExcel.Cells[1, 1] = "Vehicle Id";
             MyExcel.Cells[1, 2] = "Vehicle Type";
             MyExcel.Cells[1, 3] = "Time taken (sec)";
-            MyExcel.Cells[1, 4] = "Delay Time (Red signal)";
+            MyExcel.Cells[1, 4] = "Delay Time (Red signal - 1)";
+            MyExcel.Cells[1, 5] = "Delay Time (Red signal - 2)";
 
             int totalDistance = CaftSettings.Default.DelayDistance + (int)(globalVariables.TwoLaneColumnCount * 2 * CaftSettings.Default.CellSize_Height); 
-            MyExcel.Cells[1, 5] = "Distance Covered is " + totalDistance + " mt";
+            MyExcel.Cells[1, 6] = "Distance Covered is " + totalDistance + " mt";
 
             var allVehicles = globalVariables.VehicleList.Where(p => p.EndTimeIntersection > 0 && p.StartTimeIntersection > 0);
             if (allVehicles != null && allVehicles.Count() > 0)
@@ -1226,7 +1227,8 @@ namespace CAFT
                     MyExcel.Cells[cntIntersection + 2, 1] = cntIntersection + 1;
                     MyExcel.Cells[cntIntersection + 2, 2] = item.Properties.Type.ToString();
                     MyExcel.Cells[cntIntersection + 2, 3] = item.EndTimeIntersection - item.StartTimeIntersection;
-                    MyExcel.Cells[cntIntersection + 2, 4] = item.IsStoppedForSignal;
+                    MyExcel.Cells[cntIntersection + 2, 4] = item.IsStoppedForSignalFirst;
+                    MyExcel.Cells[cntIntersection + 2, 5] = item.IsStoppedForSignal;
 
                     cntIntersection++;
                 }

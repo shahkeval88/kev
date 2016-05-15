@@ -150,8 +150,8 @@ namespace CAFT
             cmbFirstSignalLeg.ItemsSource = allLegs;
             cmbFirstSignalLeg.DisplayMemberPath = "Text";
             cmbFirstSignalLeg.SelectedItem = allLegs.Where(p => p.Id == CaftSettings.Default.SignalFirstLegSelection).First();
-            
-            
+
+
 
             chkSignal_Checked(null, null);
 
@@ -443,18 +443,26 @@ namespace CAFT
 
         private void chkSignal_Checked(object sender, RoutedEventArgs e)
         {
-            //if ((bool)chkSignal.IsChecked)
-            //{
-            //    stSGreen.Visibility = System.Windows.Visibility.Visible;
-            //    stSRed.Visibility = System.Windows.Visibility.Visible;
-            //    stSAmber.Visibility = System.Windows.Visibility.Visible;
-            //}
-            //else
-            //{
-            //    stSGreen.Visibility = System.Windows.Visibility.Hidden;
-            //    stSRed.Visibility = System.Windows.Visibility.Hidden;
-            //    stSAmber.Visibility = System.Windows.Visibility.Hidden;
-            //}
+            if ((bool)chkSignal.IsChecked)
+            {
+                lblFirstSignalLeg.Visibility = System.Windows.Visibility.Visible;
+                cmbFirstSignalLeg.Visibility = System.Windows.Visibility.Visible;
+                lblSetting_BumpLine.Visibility = System.Windows.Visibility.Visible;
+                txtSetting_BumpLine.Visibility = System.Windows.Visibility.Visible;
+                stckSignal1.Visibility = System.Windows.Visibility.Visible;
+                stckSignal2.Visibility = System.Windows.Visibility.Visible;
+                stckSignal3.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                lblFirstSignalLeg.Visibility = System.Windows.Visibility.Hidden;
+                cmbFirstSignalLeg.Visibility = System.Windows.Visibility.Hidden;
+                lblSetting_BumpLine.Visibility = System.Windows.Visibility.Hidden;
+                txtSetting_BumpLine.Visibility = System.Windows.Visibility.Hidden;
+                stckSignal1.Visibility = System.Windows.Visibility.Hidden;
+                stckSignal2.Visibility = System.Windows.Visibility.Hidden;
+                stckSignal3.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         private void chkAutoSignal_Checked(object sender, RoutedEventArgs e)

@@ -1081,11 +1081,21 @@ namespace CAFT.Helper
                 if (vehicle.CurrentPosition.PreviousRow == vehicle.CurrentPosition.Row
                     && vehicle.Properties.Status == VehicleStatus.InProgress
                     && !globalVariables.LaneSignalOn
-                    && vehicle.CurrentPosition.Row < globalVariables.RowIntersection + 200
+                    && vehicle.CurrentPosition.Row < globalVariables.RowIntersection + 100
                     && vehicle.CurrentPosition.Row >= globalVariables.RowIntersection)
                 {
                     vehicle.IsStoppedForSignal += 1;
                 }
+
+                if (vehicle.CurrentPosition.PreviousRow == vehicle.CurrentPosition.Row
+                    && vehicle.Properties.Status == VehicleStatus.InProgress
+                    && !globalVariables.LaneSignalOnFirst
+                    && vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 100
+                    && vehicle.CurrentPosition.Row >= CaftSettings.Default.BumpLine)
+                {
+                    vehicle.IsStoppedForSignalFirst += 1;
+                }
+
                 vehicle.CurrentPosition.PreviousRow = vehicle.CurrentPosition.Row;
 
 
