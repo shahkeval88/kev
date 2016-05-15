@@ -189,7 +189,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="GreenSignalTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="RedSignalTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
@@ -283,6 +283,18 @@
     </Setting>
     <Setting Name="CrossRoadSignalAmberTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="GreenSignalTimeLeft" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="GreenSignalTimeTop" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="GreenSignalTimeRight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="SignalFirstLegSelection" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

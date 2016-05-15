@@ -143,6 +143,11 @@ namespace CAFT
             }
         }
 
+        public bool LaneSignalOnFirst { get; set; }
+        public bool LaneSignalOnFirstLeft { get; set; }
+        public bool LaneSignalOnFirstTop { get; set; }
+        public bool LaneSignalOnFirstRight { get; set; }
+
         public bool StopExecution { get; set; }
 
         public int InProgress_BL { get; set; }
@@ -268,6 +273,24 @@ namespace CAFT
                 globalVariables.LaneSignalOn_Top = false;
 
             }
+            switch (CaftSettings.Default.SignalFirstLegSelection)
+            {
+                case 1:
+                    btnLaneSignalFirstDisplay.Content = "LEG-A Signal - ON";
+                    break;
+                case 2:
+                    btnLaneSignalFirstDisplay.Content = "LEG-B Signal - ON";
+                    break;
+                case 3:
+                    btnLaneSignalFirstDisplay.Content = "LEG-C Signal - ON";
+                    break;
+                case 4:
+                    btnLaneSignalFirstDisplay.Content = "LEG-D Signal - ON";
+                    break;
+                default:
+                    break;
+            }
+            
 
             if ((bool)CaftSettings.Default.vhRangeInclude)
             {
@@ -320,7 +343,7 @@ namespace CAFT
             decimal shoulder = (decimal)((fixRoadWidth * 10) % TwoLaneColumnCount) / 10; // (decimal)((fixRoadWidth / cellwidth) - (fixRoadWidth % GridColumnCount));
             TwoLaneColumnCount++;
 
-            #region login for Signal Grid Generation
+            #region logic for Signal Grid Generation
             int ExtraRoadCells = globalVariables.ExtraRoadCellsLR;
             int tempGridColumnCount = (TwoLaneColumnCount * 2) + (ExtraRoadCells * 2);
             tempGridRowcount = GridRowCount + (TwoLaneColumnCount * 2) + globalVariables.ExtraRoadCellsS;
@@ -459,6 +482,16 @@ namespace CAFT
                         //{
                         //    bd.BorderBrush = new SolidColorBrush(Colors.Red);
                         //}
+
+                        if ((j < ExtraRoadCells && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2))
+                            || (j > (TwoLaneColumnCount * 2) + ExtraRoadCells - 1 && i < CaftSettings.Default.BumpLine && i >= CaftSettings.Default.BumpLine - (TwoLaneColumnCount * 2)))
+                        {
+                            bd.BorderBrush = new SolidColorBrush(Colors.Black);
+                        }
+                        if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
+                        {
+                            bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                        }
                     }
                     else
                     {
@@ -480,32 +513,45 @@ namespace CAFT
 
                         }
 
-                        //Setting color of bump to make it visible to user
-                        if (CaftSettings.Default.bumpInclude)
+                        if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
                         {
-                            int cellsToShowAsBump = ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)) - 1;
-
-                            if (i >= CaftSettings.Default.BumpLine && i <= CaftSettings.Default.BumpLine + cellsToShowAsBump)
+                            if (j == ((tempGridColumnCount / 2) - 1))
                             {
-                                bd.BorderBrush = new SolidColorBrush(Colors.Blue);
-
-                                if (i == CaftSettings.Default.BumpLine)
-                                {
-                                    bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
-                                }
-                                if (i == CaftSettings.Default.BumpLine + cellsToShowAsBump)
-                                {
-                                    bd.BorderThickness = new Thickness(0.3, 0.3, 0.3, 2);
-                                }
+                                bd.BorderThickness = new Thickness(0.3, 2, 2, 0.3);
                             }
+                            else
+                            {
+                                bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                            }
+                            
                         }
+
+                        //Setting color of bump to make it visible to user
+                        //if (CaftSettings.Default.bumpInclude)
+                        //{
+                        //    int cellsToShowAsBump = ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)) - 1;
+
+                        //    if (i >= CaftSettings.Default.BumpLine && i <= CaftSettings.Default.BumpLine + cellsToShowAsBump)
+                        //    {
+                        //        bd.BorderBrush = new SolidColorBrush(Colors.Blue);
+
+                        //        if (i == CaftSettings.Default.BumpLine)
+                        //        {
+                        //            bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                        //        }
+                        //        if (i == CaftSettings.Default.BumpLine + cellsToShowAsBump)
+                        //        {
+                        //            bd.BorderThickness = new Thickness(0.3, 0.3, 0.3, 2);
+                        //        }
+                        //    }
+                        //}
 
                         if (CaftSettings.Default.signalInclude)
                         {
                             if (i == CaftSettings.Default.BumpLine)
                             {
-                                bd.BorderBrush = new SolidColorBrush(Colors.Red);
-                                bd.BorderThickness = new Thickness(0, 2, 0, 0);
+                                //bd.BorderBrush = new SolidColorBrush(Colors.Red);
+                                //bd.BorderThickness = new Thickness(0, 2, 0, 0);
                             }
                         }
 
@@ -547,6 +593,8 @@ namespace CAFT
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             //File.AppendAllText("Logs.txt", "===DispatcherTimer_Tick===\r\n");
+
+            ProcessSignalOne();
 
             objProgram.Flow(MainGrid);
             if (btnStart.Content.ToString() == "Finish")
@@ -689,6 +737,122 @@ namespace CAFT
             lblTickCount.Content = "Time in seconds  - " + globalVariables.TickCount.ToString();
 
             //lblConsole.Content = globalVariables.VehicleList.Where(p => p.CurrentPosition.Row > globalVariables.RowIntersection - 1 && p.CurrentPosition.Row < globalVariables.TotalGridRowCount).Count().ToString();
+        }
+
+        private void ProcessSignalOne()
+        {
+            int tick = globalVariables.TickCount + 1;
+            int greenBottom = CaftSettings.Default.GreenSignalTime;
+            int greenLeft = CaftSettings.Default.GreenSignalTimeLeft;
+            int greenTop = CaftSettings.Default.GreenSignalTimeTop;
+            int greenRight = CaftSettings.Default.GreenSignalTimeRight;
+            int amberTime = CaftSettings.Default.AmberSignalTime;
+            int BottomStart, BottomEnd, LeftStart, LeftEnd, TopStart, TopEnd, RightStart, RightEnd;
+
+            switch (CaftSettings.Default.SignalFirstLegSelection)
+            {
+                case 1:
+                    BottomStart = 1;
+                    BottomEnd = greenBottom + amberTime;
+                    LeftStart = greenBottom + amberTime + 1;
+                    LeftEnd = greenBottom + amberTime + greenLeft + amberTime;
+                    TopStart = greenBottom + amberTime + greenLeft + amberTime + 1;
+                    TopEnd = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime;
+                    RightStart = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime + 1;
+                    RightEnd = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime + greenRight + amberTime;
+                    break;
+
+                case 2:
+                    LeftStart = 1;
+                    LeftEnd = greenLeft + amberTime;
+                    TopStart = greenLeft + amberTime + 1;
+                    TopEnd = greenLeft + amberTime + greenTop + amberTime;
+                    RightStart = greenLeft + amberTime + greenTop + amberTime + 1;
+                    RightEnd = greenLeft + amberTime + greenTop + amberTime + greenRight + amberTime;
+                    BottomStart = greenLeft + amberTime + greenTop + amberTime + greenRight + amberTime + 1;
+                    BottomEnd = greenLeft + amberTime + greenTop + amberTime + greenRight + amberTime + greenBottom + amberTime;
+                    break;
+
+                case 3:
+                    TopStart = 1;
+                    TopEnd = greenTop + amberTime;
+                    RightStart = greenTop + amberTime + 1;
+                    RightEnd = greenTop + amberTime + greenRight + amberTime;
+                    BottomStart = greenTop + amberTime + greenRight + amberTime + 1;
+                    BottomEnd = greenTop + amberTime + greenRight + amberTime + greenBottom + amberTime;
+                    LeftStart = greenTop + amberTime + greenRight + amberTime + greenBottom + amberTime + 1;
+                    LeftEnd = greenTop + amberTime + greenRight + amberTime + greenBottom + amberTime + greenLeft + amberTime;
+                    break;
+
+                case 4:
+                    RightStart = 1;
+                    RightEnd = greenRight + amberTime;
+                    BottomStart = greenRight + amberTime + 1;
+                    BottomEnd = greenRight + amberTime + greenBottom + amberTime;
+                    LeftStart = greenRight + amberTime + greenBottom + amberTime + 1;
+                    LeftEnd = greenRight + amberTime + greenBottom + amberTime + greenLeft + amberTime;
+                    TopStart = greenRight + amberTime + greenBottom + amberTime + greenLeft + amberTime + 1;
+                    TopEnd = greenRight + amberTime + greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime;
+                    break;
+
+                default:
+                    BottomStart = 1;
+                    BottomEnd = greenBottom + amberTime;
+                    LeftStart = greenBottom + amberTime + 1;
+                    LeftEnd = greenBottom + amberTime + greenLeft + amberTime;
+                    TopStart = greenBottom + amberTime + greenLeft + amberTime + 1;
+                    TopEnd = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime;
+                    RightStart = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime + 1;
+                    RightEnd = greenBottom + amberTime + greenLeft + amberTime + greenTop + amberTime + greenRight + amberTime;
+                    break;
+            }
+
+            int totalCycleTime = greenBottom + greenLeft + greenTop + greenRight + (amberTime * 4);
+
+            var reminder = (tick % totalCycleTime);
+
+            if (reminder == 0 && (tick / totalCycleTime) > 0)
+            {
+                reminder = tick / (tick / totalCycleTime);
+            }
+
+            if (reminder >= BottomStart && reminder <= BottomEnd)
+            {
+                btnLaneSignalFirstDisplay.Content = "LEG-A Signal - ON";
+                globalVariables.LaneSignalOnFirst = true;
+                globalVariables.LaneSignalOnFirstLeft = false;
+                globalVariables.LaneSignalOnFirstTop = false;
+                globalVariables.LaneSignalOnFirstRight = false;
+            }
+
+            if (reminder >= LeftStart && reminder <= LeftEnd)
+            {
+                btnLaneSignalFirstDisplay.Content = "LEG-B Signal - ON";
+                globalVariables.LaneSignalOnFirst = false;
+                globalVariables.LaneSignalOnFirstLeft = true;
+                globalVariables.LaneSignalOnFirstTop = false;
+                globalVariables.LaneSignalOnFirstRight = false;
+            }
+
+            if (reminder >= TopStart && reminder <= TopEnd)
+            {
+                btnLaneSignalFirstDisplay.Content = "LEG-C Signal - ON";
+                globalVariables.LaneSignalOnFirst = false;
+                globalVariables.LaneSignalOnFirstLeft = false;
+                globalVariables.LaneSignalOnFirstTop = true;
+                globalVariables.LaneSignalOnFirstRight = false;
+            }
+
+            if (reminder >= RightStart && reminder <= RightEnd)
+            {
+                btnLaneSignalFirstDisplay.Content = "LEG-D Signal - ON";
+                globalVariables.LaneSignalOnFirst = false;
+                globalVariables.LaneSignalOnFirstLeft = false;
+                globalVariables.LaneSignalOnFirstTop = false;
+                globalVariables.LaneSignalOnFirstRight = true;
+            }
+
+
         }
 
         private void AutoSignal_Enable(int lanesignalindic)

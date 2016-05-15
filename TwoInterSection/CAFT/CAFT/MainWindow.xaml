@@ -86,12 +86,28 @@
                             <StackPanel Orientation="Vertical">
                                 <!--<Label Name="lblConsole" Width="100" ></Label>-->
                                 <Button x:Name="btnStart" Height="40" Width="150" Margin="10"  Content="Start" Click="Button_Start" d:IsLocked="True"/>
-                                <Button x:Name="btnLaneSignal" Height="40" Width="150" Margin="10"  Content="Signal-On" Click="Button_OnOff" d:IsLocked="True"/>
-                                <Button x:Name="btnLSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-B Signal-Off" Click="LSButton_OnOff" d:IsLocked="True"/>
-                                <Button x:Name="btnRSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-D Signal-Off" Click="RSButton_OnOff" d:IsLocked="True"/>
-                                <Button x:Name="btnTSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-C Signal-Off" Click="TSButton_OnOff" d:IsLocked="True"/>
+                                
+                                <Button x:Name="btnLSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-B Signal-Off" Click="LSButton_OnOff" Visibility="Collapsed" d:IsLocked="True"/>
+                                <Button x:Name="btnRSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-D Signal-Off" Click="RSButton_OnOff" Visibility="Collapsed" d:IsLocked="True"/>
+                                <Button x:Name="btnTSLaneSignal" Height="40" Width="150" Margin="10" Content="LEG-C Signal-Off" Click="TSButton_OnOff" Visibility="Collapsed" d:IsLocked="True"/>
                                 <Button x:Name="btnShowChart" Content="Show Chart" Height="40" Width="150" Margin="10" Click="btnShowChart_Click"></Button>
                             </StackPanel>
+
+                            
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Signal - 1" Width="100" ></Label>
+                                <Button x:Name="btnLaneSignalFirstDisplay" Height="40" Width="150" Margin="10"  Content="Signal-On" IsEnabled="False" d:IsLocked="True"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Signal - 2" Width="100" ></Label>
+                                <Button x:Name="btnLaneSignal" Height="40" Width="150" Margin="10"  Content="Signal-On" Click="Button_OnOff" IsEnabled="False" d:IsLocked="True"/>
+                            </StackPanel>
+
+
 
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
@@ -107,7 +123,6 @@
                                     <Label Content="Signal"></Label>
                                 </StackPanel>
                             </StackPanel>
-
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

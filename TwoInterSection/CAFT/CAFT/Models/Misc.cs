@@ -11,4 +11,10 @@ namespace CAFT.Models
         public int NoisyCount { get; set; }
         public int TotalCount { get; set; }
     }
+
+    public class LegType
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+    }
 }

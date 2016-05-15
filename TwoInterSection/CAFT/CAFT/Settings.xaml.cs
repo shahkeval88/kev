@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAFT.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace CAFT
         {
             InitializeComponent();
 
-            
+
 
             // Setting LaneSignal
             if (CaftSettings.Default.LaneSignal)
@@ -134,8 +135,23 @@ namespace CAFT
             //Or include signal
             chkSignal.IsChecked = CaftSettings.Default.signalInclude;
             txtSetting_SGreenTime.Text = CaftSettings.Default.GreenSignalTime.ToString();
-            txtSetting_SRedTime.Text = CaftSettings.Default.RedSignalTime.ToString();
+            txtSetting_SGreenTimeLeft.Text = CaftSettings.Default.GreenSignalTimeLeft.ToString();
+            txtSetting_SGreenTimeTop.Text = CaftSettings.Default.GreenSignalTimeTop.ToString();
+            txtSetting_SGreenTimeRight.Text = CaftSettings.Default.GreenSignalTimeRight.ToString();
+            //txtSetting_SRedTime.Text = CaftSettings.Default.RedSignalTime.ToString();
             txtSetting_SAmberTime.Text = CaftSettings.Default.AmberSignalTime.ToString();
+
+            List<LegType> allLegs = new List<LegType>();
+            allLegs.Add(new LegType() { Id = 1, Text = "Bottom" });
+            allLegs.Add(new LegType() { Id = 2, Text = "Left" });
+            allLegs.Add(new LegType() { Id = 3, Text = "Top" });
+            allLegs.Add(new LegType() { Id = 4, Text = "Right" });
+
+            cmbFirstSignalLeg.ItemsSource = allLegs;
+            cmbFirstSignalLeg.DisplayMemberPath = "Text";
+            cmbFirstSignalLeg.SelectedItem = allLegs.Where(p => p.Id == CaftSettings.Default.SignalFirstLegSelection).First();
+            
+            
 
             chkSignal_Checked(null, null);
 
@@ -164,7 +180,7 @@ namespace CAFT
                 lblIntersectionSpeedZone2.Visibility = System.Windows.Visibility.Visible;
                 txtSetting_IntersectionSpeedZone.Visibility = System.Windows.Visibility.Visible;
             }
-            
+
             //txtSetting_AutoRedTime.Text = CaftSettings.Default.AutoRedSignalTime.ToString();
 
             chkLStraffic.IsChecked = CaftSettings.Default.lefttraffic;
@@ -225,8 +241,8 @@ namespace CAFT
 
             if ((bool)chkbump.IsChecked && (bool)chkSignal.IsChecked)
             {
-                MessageBox.Show("Please select either Bump or Signal");
-                return;
+                CaftSettings.Default.bumpInclude = false;
+                //return;
             }
 
             // Setting LaneSignal
@@ -372,9 +388,13 @@ namespace CAFT
             //or Include Signal or not
             CaftSettings.Default.signalInclude = (bool)chkSignal.IsChecked;
             CaftSettings.Default.GreenSignalTime = Convert.ToInt16(txtSetting_SGreenTime.Text);
-            CaftSettings.Default.RedSignalTime = Convert.ToInt16(txtSetting_SRedTime.Text);
+            CaftSettings.Default.GreenSignalTimeLeft = Convert.ToInt16(txtSetting_SGreenTimeLeft.Text);
+            CaftSettings.Default.GreenSignalTimeTop = Convert.ToInt16(txtSetting_SGreenTimeTop.Text);
+            CaftSettings.Default.GreenSignalTimeRight = Convert.ToInt16(txtSetting_SGreenTimeRight.Text);
+            //CaftSettings.Default.RedSignalTime = Convert.ToInt16(txtSetting_SRedTime.Text);
             CaftSettings.Default.AmberSignalTime = Convert.ToInt16(txtSetting_SAmberTime.Text);
 
+            CaftSettings.Default.SignalFirstLegSelection = ((LegType)cmbFirstSignalLeg.SelectedItem).Id;
 
             //Percentage Distribution in Straight, Left and Right
             CaftSettings.Default.percentStraight = Convert.ToInt16(txtSetting_PercentStaright.Text);
@@ -423,18 +443,18 @@ namespace CAFT
 
         private void chkSignal_Checked(object sender, RoutedEventArgs e)
         {
-            if ((bool)chkSignal.IsChecked)
-            {
-                stSGreen.Visibility = System.Windows.Visibility.Visible;
-                stSRed.Visibility = System.Windows.Visibility.Visible;
-                stSAmber.Visibility = System.Windows.Visibility.Visible;
-            }
-            else
-            {
-                stSGreen.Visibility = System.Windows.Visibility.Hidden;
-                stSRed.Visibility = System.Windows.Visibility.Hidden;
-                stSAmber.Visibility = System.Windows.Visibility.Hidden;
-            }
+            //if ((bool)chkSignal.IsChecked)
+            //{
+            //    stSGreen.Visibility = System.Windows.Visibility.Visible;
+            //    stSRed.Visibility = System.Windows.Visibility.Visible;
+            //    stSAmber.Visibility = System.Windows.Visibility.Visible;
+            //}
+            //else
+            //{
+            //    stSGreen.Visibility = System.Windows.Visibility.Hidden;
+            //    stSRed.Visibility = System.Windows.Visibility.Hidden;
+            //    stSAmber.Visibility = System.Windows.Visibility.Hidden;
+            //}
         }
 
         private void chkAutoSignal_Checked(object sender, RoutedEventArgs e)

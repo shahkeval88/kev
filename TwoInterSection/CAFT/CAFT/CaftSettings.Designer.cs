@@ -769,7 +769,7 @@ namespace CAFT {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int GreenSignalTime {
             get {
                 return ((int)(this["GreenSignalTime"]));
@@ -1148,6 +1148,54 @@ namespace CAFT {
             }
             set {
                 this["CrossRoadSignalAmberTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int GreenSignalTimeLeft {
+            get {
+                return ((int)(this["GreenSignalTimeLeft"]));
+            }
+            set {
+                this["GreenSignalTimeLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int GreenSignalTimeTop {
+            get {
+                return ((int)(this["GreenSignalTimeTop"]));
+            }
+            set {
+                this["GreenSignalTimeTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int GreenSignalTimeRight {
+            get {
+                return ((int)(this["GreenSignalTimeRight"]));
+            }
+            set {
+                this["GreenSignalTimeRight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int SignalFirstLegSelection {
+            get {
+                return ((int)(this["SignalFirstLegSelection"]));
+            }
+            set {
+                this["SignalFirstLegSelection"] = value;
             }
         }
     }

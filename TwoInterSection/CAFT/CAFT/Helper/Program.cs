@@ -1070,23 +1070,24 @@ namespace CAFT.Helper
         private void ProcessQueue()
         {
             //File.AppendAllText("Logs.txt", "===ProcessQueue_Start===\r\n");
-            ProcessMidSignal();
+            //ProcessMidSignal();
 
 
             ProcessNoiseProbabilty();
-            
+
 
             foreach (var vehicle in globalVariables.VehicleList)
             {
-                if (vehicle.CurrentPosition.PreviousRow == vehicle.CurrentPosition.Row 
-                    && vehicle.Properties.Status == VehicleStatus.InProgress 
+                if (vehicle.CurrentPosition.PreviousRow == vehicle.CurrentPosition.Row
+                    && vehicle.Properties.Status == VehicleStatus.InProgress
                     && !globalVariables.LaneSignalOn
-                    && vehicle.CurrentPosition.Row < globalVariables.TotalGridRowCount)
+                    && vehicle.CurrentPosition.Row < globalVariables.RowIntersection + 200
+                    && vehicle.CurrentPosition.Row >= globalVariables.RowIntersection)
                 {
                     vehicle.IsStoppedForSignal += 1;
                 }
                 vehicle.CurrentPosition.PreviousRow = vehicle.CurrentPosition.Row;
-                
+
 
                 #region MidBlock
                 if (!IsMidBlockRed)
@@ -1124,7 +1125,7 @@ namespace CAFT.Helper
 
                             if (vehicle.CurrentPosition.Row > globalVariables.RowIntersection)
                             {
-                                
+
                                 vehicle.CurrentCellSpeed = vehicle.CurrentPosition.Row - globalVariables.RowIntersection;
 
                             REDUCESPEED3:
@@ -1213,7 +1214,7 @@ namespace CAFT.Helper
                 //{
 
                 //}
-                
+
             }
         }
 
@@ -1492,7 +1493,7 @@ namespace CAFT.Helper
                     // Random Acceleration - 
                     //int i = functions.RandomNumberGenerator(0, 101);
 
-                    if (!vehicle.IsNoisy || vehicle.CurrentPosition.Row < globalVariables.RowIntersection - 1 
+                    if (!vehicle.IsNoisy || vehicle.CurrentPosition.Row < globalVariables.RowIntersection - 1
                         || (globalVariables.LaneSignalOn && vehicle.CurrentPosition.Row > globalVariables.RowIntersection))
                     {
                         if (CanAccelerate(vehicle))
@@ -1513,32 +1514,10 @@ namespace CAFT.Helper
                         }
 
                     }
-                    //else
-                    //{
-                    //    if (CaftSettings.Default.NoiseProbFactor != 0)
-                    //    {
-                    //        cntNoiseProbFactorVehicles++;
-                    //        if(!globalVariables.NoiseProbFactors.ContainsKey(globalVariables.TickCount))
-                    //        {
-                    //            globalVariables.NoiseProbFactors.Add(globalVariables.TickCount, new NoiseProbabiltyFactorType() { NoisyCount = cntNoiseProbFactorVehicles });
-                    //        }
-                    //        else
-                    //        {
-                    //            globalVariables.NoiseProbFactors[globalVariables.TickCount].NoisyCount = cntNoiseProbFactorVehicles;
-                    //        }
-                    //    }
-                    //    else if(CaftSettings.Default.NoiseProbFactor == 0)
-                    //    {
-                    //        if (!globalVariables.NoiseProbFactors.ContainsKey(globalVariables.TickCount))
-                    //        {
-                    //            globalVariables.NoiseProbFactors.Add(globalVariables.TickCount, new NoiseProbabiltyFactorType() { NoisyCount = 0 });
-                    //        }
-                    //    }
-                    //}
-
+                    bool isVehicleMoved = false;
                     if (CaftSettings.Default.bumpInclude || CaftSettings.Default.signalInclude)
                     {
-                        CheckWhetherBumpOrSignal(vehicle);
+                        isVehicleMoved = CheckWhetherBumpOrSignal(vehicle);
                     }
 
 
@@ -1574,8 +1553,8 @@ namespace CAFT.Helper
                         }
                     }
 
+                    if (!isVehicleMoved) MoveVehicle(vehicle);
 
-                    MoveVehicle(vehicle);
                 }
                 else if (vehicle.CurrentPosition.Row == globalVariables.TotalGridRowCount)
                 {
@@ -1892,49 +1871,51 @@ namespace CAFT.Helper
         }
 
 
-        private void CheckWhetherBumpOrSignal(Vehicle vehicle)
+        private bool CheckWhetherBumpOrSignal(Vehicle vehicle)
         {
             // Vehicle Speed should start decreasing as it reaches near Bump (10% of total Grid count)
-            decimal CellArndBump = Math.Round(Convert.ToDecimal(globalVariables.TotalGridRowCount) / Convert.ToDecimal(10), 0);
+            //decimal CellArndBump = Math.Round(Convert.ToDecimal(globalVariables.TotalGridRowCount) / Convert.ToDecimal(10), 0);
 
-
-            if (vehicle.CurrentPosition.Row >= CaftSettings.Default.BumpLine)
+            if (!globalVariables.LaneSignalOnFirst)
             {
-
-                if (IsMidBlockRed)
+                if (vehicle.CurrentPosition.Row >= CaftSettings.Default.BumpLine
+                    && vehicle.CurrentPosition.Row - vehicle.CurrentCellSpeed < CaftSettings.Default.BumpLine + 30)
                 {
-                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 100
-                        && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine + 80)
+                    if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine)
                     {
-                        if (vehicle.CurrentCellSpeed > 20) vehicle.CurrentCellSpeed = globalVariables.RndmNo.Next(15, 20);
-                    }
-
-                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 80
-                     && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine + 50)
-                    {
-                        if (vehicle.CurrentCellSpeed > 15) vehicle.CurrentCellSpeed = globalVariables.RndmNo.Next(10, 15);
-                    }
-
-                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 50)
-                    {
-                        if (vehicle.CurrentCellSpeed > 10) vehicle.CurrentCellSpeed = globalVariables.RndmNo.Next(6, 10);
-                    }
-
-                    if ((bool)CaftSettings.Default.signalInclude)
-                    {
-                        if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 10)
+                        vehicle.CurrentCellSpeed = vehicle.CurrentPosition.Row - CaftSettings.Default.BumpLine;
+                    REDUCESPEED4:
+                        if (CheckNextCell(vehicle))
                         {
-                            vehicle.CurrentCellSpeed = 1;
-                        }
-                        if (vehicle.CurrentPosition.Row == CaftSettings.Default.BumpLine + 1)
-                        {
-                            vehicle.CurrentCellSpeed = 0;
-                            vehicle.Properties.Status = VehicleStatus.AtMidSignal;
-                        }
-                    }
+                            //vehicle.Properties.Status = VehicleStatus.InProgress;
+                            MoveVehicle(vehicle);
 
+                        }
+                        else
+                        {
+                            if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine && vehicle.CurrentCellSpeed > 1)
+                            {
+                                vehicle.CurrentCellSpeed -= 1;
+                                goto REDUCESPEED4;
+                            }
+                        }
+                        return true;
+                    }
+                    else if (vehicle.CurrentPosition.Row == CaftSettings.Default.BumpLine)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    //if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + 80)
+                    //{
+                    //    if (vehicle.CurrentCellSpeed < 10) vehicle.CurrentCellSpeed = globalVariables.RndmNo.Next(15, 20);
+                    //}
                 }
             }
+
+            return false;
         }
 
 
@@ -1944,8 +1925,13 @@ namespace CAFT.Helper
 
         private void CalculateInterSectionDelay(Vehicle vehicle)
         {
-            if (vehicle.Direction == DirectionType.Left) return;
-            
+            if (vehicle.Direction == DirectionType.Left)
+            {
+                //vehicle.StartTimeIntersection = 9999;
+                //vehicle.EndTimeIntersection = 9999;
+                return;
+            }
+
             int startLine = CaftSettings.Default.DelayDistance;
 
             int cellStart = globalVariables.RowIntersection + (int)(startLine / CaftSettings.Default.CellSize_Height);
@@ -3110,7 +3096,7 @@ namespace CAFT.Helper
             //{
             //    var totol = globalVariables.VehicleList.Where(p => p.CurrentPosition.Row > globalVariables.RowIntersection - 1 && p.CurrentPosition.Row < globalVariables.TotalGridRowCount).Count(); //globalVariables.VehicleList.Where(p => p.Properties.DirectionStatus == VehicleDirectionChange.NoNeedToChange).Count();
             //    globalVariables.NoiseProbFactors[globalVariables.TickCount].TotalCount = totol;
-                
+
             //}
             //else
             //{
