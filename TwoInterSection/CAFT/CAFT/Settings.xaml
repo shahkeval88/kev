@@ -202,15 +202,15 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSGreen">
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSGreen" Visibility="Collapsed">
                                     <Label Content="Signal Green Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
                                     <!--<TextBox Name="txtSetting_SGreenTime" Width="30"/>-->
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSRed">
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSRed" Visibility="Collapsed">
                                     <Label Content="Signal Red Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
                                     <!--<TextBox Name="txtSetting_SRedTime" Width="30"/>-->
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSAmber">
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSAmber" Visibility="Collapsed">
                                     <Label Content="Signal Amber Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
                                     <!--<TextBox Name="txtSetting_SAmberTime" Width="30"/>-->
                                 </StackPanel>

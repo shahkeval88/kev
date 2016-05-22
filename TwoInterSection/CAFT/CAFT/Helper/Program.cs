@@ -1506,6 +1506,7 @@ namespace CAFT.Helper
                     if (!vehicle.IsNoisy || vehicle.CurrentPosition.Row < globalVariables.RowIntersection - 1
                         || (globalVariables.LaneSignalOn && vehicle.CurrentPosition.Row > globalVariables.RowIntersection))
                     {
+
                         if (CanAccelerate(vehicle))
                         {
                             //vehicle.CurrentCellSpeed += 1;
@@ -1522,7 +1523,6 @@ namespace CAFT.Helper
                                 }
                             }
                         }
-
                     }
                     bool isVehicleMoved = false;
                     if (CaftSettings.Default.bumpInclude || CaftSettings.Default.signalInclude)
@@ -2203,6 +2203,11 @@ namespace CAFT.Helper
 
         private bool CheckLaneOvertake(Vehicle vehicle)
         {
+            //if (!globalVariables.LaneSignalOnFirst && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine)
+            //{
+            //    return true;
+            //}
+
             int prevlane = vehicle.CurrentPosition.Column;
             int curLane = vehicle.CurrentPosition.Column;
             int curRow = vehicle.CurrentPosition.Row;
@@ -2331,6 +2336,21 @@ namespace CAFT.Helper
 
                 vehicle.CurrentPosition.Row -= vehicle.CurrentCellSpeed;
 
+                bool noNeedToIncreaseSpeed = false;
+
+                if(!globalVariables.LaneSignalOnFirst 
+                    && vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine
+                    && curRow > CaftSettings.Default.BumpLine)
+                {
+                   /* First Signal is ON and vehicle is before the signal line
+                    but due to overtaking logic, it is now going beyond the signal
+                    which is wrong, so making the speed of vehicle to 1 which will
+                    cause the vehicle to slow down as well as next loop will take care
+                    of everything else. */
+                    vehicle.CurrentPosition.Row = curRow - 1;
+                    noNeedToIncreaseSpeed = true;
+                }
+
                 if (isovertakefromrighthandside)
                 {
                     vehicle.CurrentPosition.Column += 1;
@@ -2371,7 +2391,7 @@ namespace CAFT.Helper
 
 
                 // Increase speed of the vehicle
-                if (vehicle.Properties.MaxCellSpeed != vehicle.CurrentCellSpeed)
+                if (vehicle.Properties.MaxCellSpeed != vehicle.CurrentCellSpeed && !noNeedToIncreaseSpeed)
                 {
                     vehicle.CurrentCellSpeed += 1;
                 }
