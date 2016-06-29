@@ -2336,19 +2336,19 @@ namespace CAFT.Helper
 
                 vehicle.CurrentPosition.Row -= vehicle.CurrentCellSpeed;
 
-                bool noNeedToIncreaseSpeed = false;
+                //bool noNeedToIncreaseSpeed = false;
 
-                if(!globalVariables.LaneSignalOnFirst 
-                    && vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine
+                if (!globalVariables.LaneSignalOnFirst
+                    && vehicle.CurrentPosition.Row <= CaftSettings.Default.BumpLine
                     && curRow > CaftSettings.Default.BumpLine)
                 {
-                   /* First Signal is ON and vehicle is before the signal line
-                    but due to overtaking logic, it is now going beyond the signal
-                    which is wrong, so making the speed of vehicle to 1 which will
-                    cause the vehicle to slow down as well as next loop will take care
-                    of everything else. */
+                    /* First Signal is ON and vehicle is before the signal line
+                     but due to overtaking logic, it is now going beyond the signal
+                     which is wrong, so making the speed of vehicle to 1 which will
+                     cause the vehicle to slow down as well as next loop will take care
+                     of everything else. */
                     vehicle.CurrentPosition.Row = curRow - 1;
-                    noNeedToIncreaseSpeed = true;
+                    //noNeedToIncreaseSpeed = true;
                 }
 
                 if (isovertakefromrighthandside)
@@ -2391,7 +2391,7 @@ namespace CAFT.Helper
 
 
                 // Increase speed of the vehicle
-                if (vehicle.Properties.MaxCellSpeed != vehicle.CurrentCellSpeed && !noNeedToIncreaseSpeed)
+                if (vehicle.Properties.MaxCellSpeed != vehicle.CurrentCellSpeed)// && !noNeedToIncreaseSpeed)
                 {
                     vehicle.CurrentCellSpeed += 1;
                 }

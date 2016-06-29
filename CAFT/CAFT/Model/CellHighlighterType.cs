@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFT.Model
 {
-    public class CellHighlighterType
+    public class CellHighLighterType
     {
         public int ColorCode { get; set; }
 

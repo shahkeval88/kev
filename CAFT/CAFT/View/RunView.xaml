@@ -15,13 +15,14 @@
                         <DataTemplate>
                             <Grid
                             local:GridHelpers.RowCount="{Binding Length}"
-                            local:GridHelpers.ColumnCount="{Binding Width}">
-                                <Label Content="{Binding Length}"></Label>
+                            local:GridHelpers.ColumnCount="{Binding Width}"
+                            local:GridHelpers.GridHighLighter="{Binding GridHighLighter}">
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
+            <Button Content="Change width" Command="{Binding ChangeWidthCommand}"></Button>
         </StackPanel>
     </Grid>
 </UserControl>

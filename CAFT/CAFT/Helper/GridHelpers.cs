@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CAFT.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace CAFT.Helper
 {
@@ -221,5 +224,67 @@ namespace CAFT.Helper
                         new GridLength(1, GridUnitType.Star);
             }
         }
+
+
+        #region GridHighlighter Property
+
+        /// <summary>
+        /// Adds the specified number of Rows to RowDefinitions. 
+        /// Default Height is Auto
+        /// </summary>
+        public static readonly DependencyProperty GridHighLighterProperty =
+            DependencyProperty.RegisterAttached(
+                "GridHighLighter", typeof(ObservableCollection<CellHighLighterType>), typeof(GridHelpers),
+                new PropertyMetadata(new ObservableCollection<CellHighLighterType>(), GridHighLighterChanged));
+
+        // Get
+        public static ObservableCollection<CellHighLighterType> GetGridHighLighter(DependencyObject obj)
+        {
+            return (ObservableCollection<CellHighLighterType>)obj.GetValue(GridHighLighterProperty);
+        }
+
+        // Set
+        public static void SetGridHighLighter(DependencyObject obj, ObservableCollection<CellHighLighterType> value)
+        {
+            obj.SetValue(GridHighLighterProperty, value);
+        }
+
+        // Change Event - Adds the Rows
+        public static void GridHighLighterChanged(
+            DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(obj is Grid) || e.NewValue == null)
+                return;
+
+            Grid grid = (Grid)obj;
+            ObservableCollection<CellHighLighterType> cellhighlighter = (ObservableCollection<CellHighLighterType>)e.NewValue;
+
+            if(grid != null && cellhighlighter != null && cellhighlighter.Count > 0)
+            {
+                foreach (var cell in cellhighlighter)
+                {
+                    var border = grid.Children.OfType<Border>().Where(p => Grid.GetRow(p) == cell.RowNumber && Grid.GetColumn(p) == cell.ColumnNumber).FirstOrDefault();
+                    Rectangle r = new Rectangle();
+                    r.Height = 10.0;
+                    r.Width = 10.0;
+                    switch (cell.ColorCode)
+                    {
+                        case 1:
+                            r.Fill = new SolidColorBrush(Colors.Red);
+                            border.Child = r;
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            }
+            
+            
+        }
+
+        #endregion
+
+
     }
 }

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CAFT.Model
 {
-    public class Road
+    public class Road : ViewModelBase
     {
         private int _Id;
 
@@ -61,7 +63,19 @@ namespace CAFT.Model
         
         public CrossRoadType CrossRoadEnd { get; set; }
 
-        public CellHighlighterType[] CellHighlighter { get; set; }
+        private ObservableCollection<CellHighLighterType> _GridHighLighter;
+        public ObservableCollection<CellHighLighterType> GridHighLighter
+        {
+            get
+            {
+                return _GridHighLighter;
+            }
+            set
+            {
+                _GridHighLighter = value;
+                RaisePropertyChanged("GridHighLighter");
+            }
+        }
         
 
         public Road(int length, int width)
@@ -69,6 +83,18 @@ namespace CAFT.Model
             this.Length = length;
             this.Width = width;
         }
-        
+
+        internal void AssociateCellHighlighter(List<CellHighLighterType> cellhighlighter)
+        {
+            
+        }
+
+
+        internal void UpdateCellHighlighter(CellHighLighterType[,] CellHighlighter)
+        {
+            
+
+
+        }
     }
 }
