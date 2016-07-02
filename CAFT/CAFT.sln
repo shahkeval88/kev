@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAFT", "CAFT\CAFT.csproj", "{2659F920-4DEC-4305-B758-31D1C2DE33CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAFT.Engine", "CAFT.Engine\CAFT.Engine.csproj", "{94EDD725-4788-46F4-8872-25BABC837651}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2659F920-4DEC-4305-B758-31D1C2DE33CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2659F920-4DEC-4305-B758-31D1C2DE33CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2659F920-4DEC-4305-B758-31D1C2DE33CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94EDD725-4788-46F4-8872-25BABC837651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94EDD725-4788-46F4-8872-25BABC837651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94EDD725-4788-46F4-8872-25BABC837651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94EDD725-4788-46F4-8872-25BABC837651}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

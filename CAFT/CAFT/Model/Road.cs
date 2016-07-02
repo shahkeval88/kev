@@ -84,17 +84,5 @@ namespace CAFT.Model
             this.Width = width;
         }
 
-        internal void AssociateCellHighlighter(List<CellHighLighterType> cellhighlighter)
-        {
-            
-        }
-
-
-        internal void UpdateCellHighlighter(CellHighLighterType[,] CellHighlighter)
-        {
-            
-
-
-        }
     }
 }
