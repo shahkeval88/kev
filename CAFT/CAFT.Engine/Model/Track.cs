@@ -8,8 +8,9 @@ namespace CAFT.Engine.Model
 {
     class Track
     {
-        public bool IsRoadCell { get; set; }
+        public List<RoadType> Roads { get; set; }
 
-        public int MyProperty { get; set; }
+        public List<CrossRoadType> CrossRoads { get; set; }
+
     }
 }
