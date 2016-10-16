@@ -31,6 +31,8 @@ namespace CAFT
         //private GlobalVariables() { }
         public string ActualLegSelected;
 
+        public bool IsInterSection = false;
+
         public List<Vehicle> VehicleList = new List<Vehicle>();
 
         public List<Vehicle> VehicleListTop = new List<Vehicle>();
@@ -40,15 +42,15 @@ namespace CAFT
         public Random RndmNo = new Random();
 
         private bool _LaneSignalOn;
-        public bool LaneSignalOn 
-        { 
+        public bool LaneSignalOn
+        {
             get
             {
                 return _LaneSignalOn;
             }
             set
             {
-                if(_LaneSignalOn == false && value == true && this.TickCount > 0)
+                if (_LaneSignalOn == false && value == true && this.TickCount > 0)
                 {
                     var veh = this.VehicleList
                         .Where(p => p.IsStoppedForSignal > 2
@@ -59,7 +61,7 @@ namespace CAFT
                     {
                         this.QueueListBottom.Add(this.TickCount, (double)(CaftSettings.Default.CellSize_Height * (veh.CurrentPosition.Row - this.ExtraRoadCellsS - (this.TwoLaneColumnCount * 2))));
                     }
-                    
+
                     //MessageBox.Show(abc.Count().ToString() + ": " + cdf.CurrentPosition.Row.ToString() + "," + cdf.Properties.Type.ToString());  
                 }
                 _LaneSignalOn = value;
@@ -221,8 +223,15 @@ namespace CAFT
         public int VhSessiongap = 0;
         public int[] VhAssignment, VhGenerated;
 
+        public int bumpB20, bumpB40, bumpB60, bumpA20, bumpA40, bumpA60;
+
         public DateTime SimulationStartTime;
         public DateTime SimulationFinishTime;
+
+        public int SecondsForHeadwayDist = CaftSettings.Default.SecondsForHeadwayDist;
+        public int HeadwayDist;
+        public int[] TotalVehicleInOneHeadwayDist = new int[1];
+        public double perHeadWayDistVehicle;
 
     }
 
@@ -249,6 +258,7 @@ namespace CAFT
         {
             InitializeComponent();
             SetGlobals();
+            DecideModel();
 
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -290,30 +300,44 @@ namespace CAFT
                 default:
                     break;
             }
-            
+
 
             if ((bool)CaftSettings.Default.vhRangeInclude)
             {
                 globalVariables.VhRangeRandom = functions.RandomNumberGenerator(CaftSettings.Default.VhRangeMin, CaftSettings.Default.VhRangeMax + 1);
 
-                
-                if (globalVariables.VhRangeRandom > 60)
+
+                if (globalVariables.VhRangeRandom > globalVariables.SecondsForHeadwayDist)
                 {
-                    globalVariables.VhAssignment = functions.VehicleAssignmentSession(60, globalVariables.VhRangeRandom);
-                    globalVariables.VhGenerated = new int[60];
+                    globalVariables.VhAssignment = functions.VehicleAssignmentSession(globalVariables.SecondsForHeadwayDist, globalVariables.VhRangeRandom);
+                    globalVariables.VhGenerated = new int[globalVariables.SecondsForHeadwayDist];
                 }
                 else
                 {
-                    globalVariables.VhSessiongap = 60 / globalVariables.VhRangeRandom;
+                    globalVariables.VhSessiongap = globalVariables.SecondsForHeadwayDist / globalVariables.VhRangeRandom;
                     globalVariables.VhAssignment = functions.VehicleAssignmentSession(globalVariables.VhRangeRandom, globalVariables.VhRangeRandom);
                     globalVariables.VhGenerated = new int[globalVariables.VhRangeRandom];
                 }
- 
+
             }
 
 
 
             GenerateGrid();
+        }
+
+        private void DecideModel()
+        {
+            if (File.Exists("IS.txt"))
+            {
+                globalVariables.IsInterSection = true;
+                CaftSettings.Default.signalInclude = false;
+            }
+            else
+            {
+                globalVariables.IsInterSection = false;
+                CaftSettings.Default.bumpInclude = false;
+            }
         }
 
 
@@ -347,7 +371,7 @@ namespace CAFT
             int ExtraRoadCells = globalVariables.ExtraRoadCellsLR;
             int tempGridColumnCount = (TwoLaneColumnCount * 2) + (ExtraRoadCells * 2);
             tempGridRowcount = GridRowCount + (TwoLaneColumnCount * 2) + globalVariables.ExtraRoadCellsS;
-            
+
             #endregion
 
             globalVariables.MaxColumn = ExtraRoadCells + TwoLaneColumnCount;
@@ -514,50 +538,57 @@ namespace CAFT
                             }
 
                         }
-
-                        if (CaftSettings.Default.signalInclude)
+                        if (!globalVariables.IsInterSection)
                         {
-                            if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
+                            if (CaftSettings.Default.signalInclude)
                             {
-                                if (j == ((tempGridColumnCount / 2) - 1))
+                                if (i == CaftSettings.Default.BumpLine - TwoLaneColumnCount)
                                 {
-                                    bd.BorderThickness = new Thickness(0.3, 2, 2, 0.3);
-                                }
-                                else
-                                {
-                                    bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
-                                }
+                                    if (j == ((tempGridColumnCount / 2) - 1))
+                                    {
+                                        bd.BorderThickness = new Thickness(0.3, 2, 2, 0.3);
+                                    }
+                                    else
+                                    {
+                                        bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                                    }
 
+                                }
                             }
                         }
                         //Setting color of bump to make it visible to user
-                        //if (CaftSettings.Default.bumpInclude)
-                        //{
-                        //    int cellsToShowAsBump = ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)) - 1;
-
-                        //    if (i >= CaftSettings.Default.BumpLine && i <= CaftSettings.Default.BumpLine + cellsToShowAsBump)
-                        //    {
-                        //        bd.BorderBrush = new SolidColorBrush(Colors.Blue);
-
-                        //        if (i == CaftSettings.Default.BumpLine)
-                        //        {
-                        //            bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
-                        //        }
-                        //        if (i == CaftSettings.Default.BumpLine + cellsToShowAsBump)
-                        //        {
-                        //            bd.BorderThickness = new Thickness(0.3, 0.3, 0.3, 2);
-                        //        }
-                        //    }
-                        //}
-
-                        if (CaftSettings.Default.signalInclude)
+                        if (globalVariables.IsInterSection)
                         {
-                            if (i == CaftSettings.Default.BumpLine)
+                            if (CaftSettings.Default.bumpInclude)
                             {
-                                //bd.BorderBrush = new SolidColorBrush(Colors.Red);
-                                //bd.BorderThickness = new Thickness(0, 2, 0, 0);
+                                int cellsToShowAsBump = ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)) - 1;
+
+                                if (i >= CaftSettings.Default.BumpLine && i <= CaftSettings.Default.BumpLine + cellsToShowAsBump)
+                                {
+                                    bd.BorderBrush = new SolidColorBrush(Colors.Blue);
+
+                                    if (i == CaftSettings.Default.BumpLine)
+                                    {
+                                        bd.BorderThickness = new Thickness(0.3, 2, 0.3, 0.3);
+                                    }
+                                    if (i == CaftSettings.Default.BumpLine + cellsToShowAsBump)
+                                    {
+                                        bd.BorderThickness = new Thickness(0.3, 0.3, 0.3, 2);
+                                    }
+                                }
+                            }
+
+                            if (CaftSettings.Default.signalIncludePed)
+                            {
+                                if (i == CaftSettings.Default.SignalLinePed)
+                                {
+                                    bd.BorderBrush = new SolidColorBrush(Colors.Red);
+                                    bd.BorderThickness = new Thickness(0, 2, 0, 0);
+                                }
                             }
                         }
+
+                        
 
                         if (i == CaftSettings.Default.headway)
                         {
@@ -668,7 +699,7 @@ namespace CAFT
                 //int topsignal = leftsignal + GreenCount_Top;
                 //int rightsignal = topsignal + GreenCount_Right;
 
-                
+
                 int AmberTime = CaftSettings.Default.CrossRoadSignalAmberTime;
 
                 if (globalVariables.AutoTickCount <= GreenCount_Bottom)
@@ -711,7 +742,7 @@ namespace CAFT
 
                 AutoSignal_Enable(lanesignalindicator);
             }
-            
+
             globalVariables.TickCount++;
 
             lblCompleted_BL.Content = "Completed - " + globalVariables.Completed_BL.ToString();
@@ -868,45 +899,45 @@ namespace CAFT
         private void AutoSignal_Enable(int lanesignalindic)
         {
             switch (lanesignalindic)
-            {   
+            {
                 case 0:
-                        btnLaneSignal.Content = "LEG-A Signal On";
-                        globalVariables.LaneSignalOn = true;
-                        globalVariables.LaneSignalOn_Left = false;
-                        globalVariables.LaneSignalOn_Top = false;
-                        globalVariables.LaneSignalOn_Right = false;
+                    btnLaneSignal.Content = "LEG-A Signal On";
+                    globalVariables.LaneSignalOn = true;
+                    globalVariables.LaneSignalOn_Left = false;
+                    globalVariables.LaneSignalOn_Top = false;
+                    globalVariables.LaneSignalOn_Right = false;
                     break;
 
                 case 1:
-                        btnLaneSignal.Content = "LEG-B Signal On";
-                        globalVariables.LaneSignalOn = false;
-                        globalVariables.LaneSignalOn_Left = true;
-                        globalVariables.LaneSignalOn_Top = false;
-                        globalVariables.LaneSignalOn_Right = false;
+                    btnLaneSignal.Content = "LEG-B Signal On";
+                    globalVariables.LaneSignalOn = false;
+                    globalVariables.LaneSignalOn_Left = true;
+                    globalVariables.LaneSignalOn_Top = false;
+                    globalVariables.LaneSignalOn_Right = false;
                     break;
 
                 case 2:
-                        btnLaneSignal.Content = "LEG-C Signal On";
-                        globalVariables.LaneSignalOn = false;
-                        globalVariables.LaneSignalOn_Left = false;
-                        globalVariables.LaneSignalOn_Top = true;
-                        globalVariables.LaneSignalOn_Right = false;
-                        break;
+                    btnLaneSignal.Content = "LEG-C Signal On";
+                    globalVariables.LaneSignalOn = false;
+                    globalVariables.LaneSignalOn_Left = false;
+                    globalVariables.LaneSignalOn_Top = true;
+                    globalVariables.LaneSignalOn_Right = false;
+                    break;
 
                 case 3:
-                        btnLaneSignal.Content = "LEG-D Signal On";
-                        globalVariables.LaneSignalOn = false;
-                        globalVariables.LaneSignalOn_Left = false;
-                        globalVariables.LaneSignalOn_Top = false;
-                        globalVariables.LaneSignalOn_Right = true;
+                    btnLaneSignal.Content = "LEG-D Signal On";
+                    globalVariables.LaneSignalOn = false;
+                    globalVariables.LaneSignalOn_Left = false;
+                    globalVariables.LaneSignalOn_Top = false;
+                    globalVariables.LaneSignalOn_Right = true;
                     break;
 
                 default:
-                        btnLaneSignal.Content = "Yellow Light";
-                        globalVariables.LaneSignalOn = false;
-                        globalVariables.LaneSignalOn_Left = false;
-                        globalVariables.LaneSignalOn_Top = false;
-                        globalVariables.LaneSignalOn_Right = false;
+                    btnLaneSignal.Content = "Yellow Light";
+                    globalVariables.LaneSignalOn = false;
+                    globalVariables.LaneSignalOn_Left = false;
+                    globalVariables.LaneSignalOn_Top = false;
+                    globalVariables.LaneSignalOn_Right = false;
                     break;
             }
 
@@ -1112,6 +1143,17 @@ namespace CAFT
             #endregion
 
 
+            var bumpL = CaftSettings.Default.BumpLine;
+            var gridHeight = CaftSettings.Default.CellSize_Height;
+
+            globalVariables.bumpB20 = bumpL + (int)(20 / gridHeight);
+            globalVariables.bumpB40 = bumpL + (int)(40 / gridHeight);
+            globalVariables.bumpB60 = bumpL + (int)(60 / gridHeight);
+
+            globalVariables.bumpA20 = bumpL - (int)(20 / gridHeight);
+            globalVariables.bumpA40 = bumpL - (int)(40 / gridHeight);
+            globalVariables.bumpA60 = bumpL - (int)(60 / gridHeight);
+
             globalVariables.rdTypeOfVehicles = functions.GetUniqueRandoms(1, 1001);
             globalVariables.rdTypeOfVehiclesTop = functions.GetUniqueRandoms(1, 1001);
             globalVariables.rdTypeOfVehiclesRight = functions.GetUniqueRandoms(1, 1001);
@@ -1193,7 +1235,7 @@ namespace CAFT
                 //objProgram.ThreeWheelRatio = 52 + 21;
                 //objProgram.FourWheenRatio = 52 + 21 + 26;
                 //objProgram.LCVRatio = 52 + 21 + 26 + 1;
-                
+
 
                 //objProgram.StraightRatio = 56;
                 //objProgram.RightRatio = 56 + 26;
@@ -1232,10 +1274,41 @@ namespace CAFT
                 //objProgram.LeftRatio = 55 + 30 + 15;
             }
 
+            if (CaftSettings.Default.vhRangeInclude)
+            {
+                //int[] TotalVehicleInOneHeadwayDist;
+                int totalVehicles = globalVariables.VhRangeRandom;
+                int headwayDist = CaftSettings.Default.SecondsForHeadwayDist;
 
+                int initialHeadWayDist = headwayDist;
+                double perHeadWayDistVehicle = 0.0;
+
+                for (int i = initialHeadWayDist - 2; i < initialHeadWayDist + 5; i++)
+                {
+                    headwayDist = i;
+                    perHeadWayDistVehicle = ((double)totalVehicles / 3600) * headwayDist;
+                    double dec = perHeadWayDistVehicle - (int)perHeadWayDistVehicle;
+
+                    if (dec > 0.9 || dec < 0.1)
+                    {
+                        perHeadWayDistVehicle = Math.Round(perHeadWayDistVehicle, 0);
+                        break;
+                    }
+                    else if (dec > 0.45 && dec < 0.55)
+                    {
+                        perHeadWayDistVehicle = Math.Round(perHeadWayDistVehicle * 2, 0);
+                        headwayDist = headwayDist * 2;
+                        break;
+                    }
+
+                }
+
+                globalVariables.HeadwayDist = headwayDist;
+                globalVariables.perHeadWayDistVehicle = perHeadWayDistVehicle;
+            }
 
             //globalVariables.TickCount = 0;
-            
+
             dispatcherTimer.Start();
             if (btnStart.Content.ToString() == "Start")
             {
@@ -1320,7 +1393,7 @@ namespace CAFT
 
         private void Setings_Click(object sender, RoutedEventArgs e)
         {
-            Settings set = new Settings();
+            Settings set = new Settings(globalVariables);
             set.Show();
         }
     }

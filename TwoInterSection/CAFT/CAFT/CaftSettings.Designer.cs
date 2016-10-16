@@ -1129,7 +1129,7 @@ namespace CAFT {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("49")]
         public int NoiseProbFactor {
             get {
                 return ((int)(this["NoiseProbFactor"]));
@@ -1196,6 +1196,78 @@ namespace CAFT {
             }
             set {
                 this["SignalFirstLegSelection"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SecondsForHeadwayDist {
+            get {
+                return ((int)(this["SecondsForHeadwayDist"]));
+            }
+            set {
+                this["SecondsForHeadwayDist"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool signalIncludePed {
+            get {
+                return ((bool)(this["signalIncludePed"]));
+            }
+            set {
+                this["signalIncludePed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int SGreenSignalPed {
+            get {
+                return ((int)(this["SGreenSignalPed"]));
+            }
+            set {
+                this["SGreenSignalPed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int SRedSignalPed {
+            get {
+                return ((int)(this["SRedSignalPed"]));
+            }
+            set {
+                this["SRedSignalPed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int SAmberSignalPed {
+            get {
+                return ((int)(this["SAmberSignalPed"]));
+            }
+            set {
+                this["SAmberSignalPed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public int SignalLinePed {
+            get {
+                return ((int)(this["SignalLinePed"]));
+            }
+            set {
+                this["SignalLinePed"] = value;
             }
         }
     }

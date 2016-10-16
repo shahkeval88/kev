@@ -120,7 +120,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Rectangle Height="2" Width="20" Margin="10,0,0,0" Stroke="Red"></Rectangle>
-                                    <Label Content="Signal"></Label>
+                                    <Label Content="Pedestrian Signal"></Label>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>

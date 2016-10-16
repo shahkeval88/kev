@@ -29,6 +29,15 @@ namespace CAFT
             InitializeExcel();
             this.extraGridRowCount = _extraGridRowCount;
             this.globalVariables = _globalVariables;
+
+            if (globalVariables.IsInterSection)
+            {
+                pnlInterSection_Summary.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                pnlInterSection_Summary.Visibility = System.Windows.Visibility.Collapsed;
+            }
         }
 
         MSExcel.Application MyExcel;
@@ -1279,5 +1288,117 @@ namespace CAFT
 
             lblNoiseProbFactor.Content = "Data for " + sheetName + " is generated";
         }
+
+        private void btnBumpData_Click(object sender, RoutedEventArgs e)
+        {
+            var TwoWCount = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.TwoWheel);
+
+            var ThreeWCount = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.ThreeWheel);
+
+            var FourWCount = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.FourWheel);
+
+            var LCV1Count = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.LCV1);
+
+            var LCV2Count = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.LCV2);
+
+            var HCV1Count = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.HCV1);
+
+            var HCV2Count = globalVariables.VehicleList.Where(p => p.Properties.Status == VehicleStatus.Completed
+                                            && p.Properties.Type == VehicleType.HCV2);
+
+            LogBumpData(TwoWCount.ToList<Vehicle>(), ThreeWCount.ToList<Vehicle>(), FourWCount.ToList<Vehicle>(), LCV1Count.ToList<Vehicle>(), LCV2Count.ToList<Vehicle>(), HCV1Count.ToList<Vehicle>(), HCV2Count.ToList<Vehicle>());
+        }
+
+        private void LogBumpData(List<Vehicle> twoW, List<Vehicle> threeW, List<Vehicle> fourW, List<Vehicle> LCV1, List<Vehicle> LCV2, List<Vehicle> HCV1, List<Vehicle> HCV2)
+        {
+            string sheetName = "BumpData";
+            var tempS = MyExcel.ActiveWorkbook.Sheets.Cast<MSExcel.Worksheet>().Where(p => p.Name == sheetName).FirstOrDefault();
+            if (tempS == null)
+            {
+                MSExcel.Worksheet curWSheet = MyExcel.ActiveWorkbook.Sheets.Add();
+                curWSheet.Name = sheetName;
+            }
+            else
+            {
+                tempS.Activate();
+            }
+
+            MyExcel.Cells[1, 1] = "Type of Vehicles";
+            MyExcel.Cells[1, 2] = "Before Bump";
+            MyExcel.Cells[2, 2] = "60m";
+            MyExcel.Cells[2, 3] = "40m";
+            MyExcel.Cells[2, 4] = "20m";
+
+            MyExcel.Cells[1, 5] = "On Bump";
+
+            MyExcel.Cells[1, 6] = "After Bump";
+            MyExcel.Cells[2, 6] = "20m";
+            MyExcel.Cells[2, 7] = "40m";
+            MyExcel.Cells[2, 8] = "60m";
+
+            LogByVehicleTypes(twoW, "Two Wheel", 3);
+            LogByVehicleTypes(threeW, "Three Wheel", 4);
+            LogByVehicleTypes(fourW, "Four Wheel", 5);
+            LogByVehicleTypes(LCV1, "LCV1", 6);
+            LogByVehicleTypes(LCV2, "LCV2", 7);
+            LogByVehicleTypes(HCV1, "HCV1", 8);
+            LogByVehicleTypes(HCV2, "HCV2", 9);
+
+            lblBumpData.Content = "Data for " + sheetName + " is generated";
+        }
+
+        private void LogByVehicleTypes(List<Vehicle> listOfVh, string nameOfVehicle, int row)
+        {
+            MyExcel.Cells[row, 1] = nameOfVehicle;
+
+            var temp = listOfVh.Where(p => p.bumpB60 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 2] = temp.Sum(p => p.bumpB60) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.bumpB40 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 3] = temp.Sum(p => p.bumpB40) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.bumpB20 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 4] = temp.Sum(p => p.bumpB20) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.OnBump > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 5] = temp.Sum(p => p.OnBump) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.bumpA20 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 6] = temp.Sum(p => p.bumpA20) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.bumpA40 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 7] = temp.Sum(p => p.bumpA40) / temp.Count();
+            }
+
+            temp = listOfVh.Where(p => p.bumpA60 > 0);
+            if (temp != null && temp.Count() > 0)
+            {
+                MyExcel.Cells[row, 8] = temp.Sum(p => p.bumpA60) / temp.Count();
+            }
+        }
+
     }
 }

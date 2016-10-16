@@ -130,83 +130,158 @@ namespace CAFT.Helper
             int totalvehicles = globalVariables.VehicleList.Count();
             //if (totalvehicles >= 1) 
             //    return new List<Vehicle>();
-
+            
 
             if ((bool)CaftSettings.Default.vhRangeInclude)
             {
-                int VhSession = globalVariables.VhSession;
-                if (VhSession < 60)
+                #region old Vehicle Generation Logic - per 60
+                //int VhSession = globalVariables.VhSession;
+                //if (VhSession < globalVariables.SecondsForHeadwayDist)
+                //{
+                //    if (globalVariables.VhAssignment.Count() == globalVariables.SecondsForHeadwayDist)
+                //    {
+                //        if (globalVariables.TickCount == 0 || globalVariables.TickCount % globalVariables.SecondsForHeadwayDist > 0)
+                //        {
+                //            int vhLeft = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
+                //            int rndNo = functions.RandomNumberGenerator(0, 2);
+                //            int maxval = 0;
+
+                //            if (vhLeft > 5)
+                //            {
+                //                maxval = 5;
+                //            }
+                //            else
+                //            {
+                //                maxval = functions.RandomNumberGenerator(0, vhLeft + 1);
+                //            }
+
+                //            if (rndNo == 0)
+                //            {
+                //                vehicleCounter = functions.RandomNumberGenerator(0, maxval + 1);
+                //                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (globalVariables.VhGenerated[VhSession] < globalVariables.VhAssignment[VhSession])
+                //            {
+                //                vehicleCounter = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
+                //                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                //            }
+
+                //            globalVariables.VhSession += 1;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (globalVariables.TickCount == 0 || globalVariables.TickCount % (globalVariables.SecondsForHeadwayDist * globalVariables.VhSessiongap) > 0)
+                //        {
+                //            int vhLeft = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
+                //            int rndNo = functions.RandomNumberGenerator(0, 2);
+                //            int maxval = 0;
+
+                //            if (vhLeft > 5)
+                //            {
+                //                maxval = 5;
+                //            }
+                //            else
+                //            {
+                //                maxval = functions.RandomNumberGenerator(0, vhLeft + 1);
+                //            }
+
+                //            if (rndNo == 0)
+                //            {
+                //                vehicleCounter = functions.RandomNumberGenerator(0, maxval + 1);
+                //                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (globalVariables.VhGenerated[VhSession] < globalVariables.VhAssignment[VhSession])
+                //            {
+                //                vehicleCounter = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
+                //                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                //            }
+
+                //            globalVariables.VhSession += 1;
+                //        }
+
+                //    }
+                //}
+#endregion
+
+                /*-- Vehicle Generation Logic  --*/
+
+
+                if (globalVariables.TickCount == 0 || globalVariables.TickCount % globalVariables.HeadwayDist == 0)
                 {
-                    if (globalVariables.VhAssignment.Count() == 60)
+
+                    globalVariables.TotalVehicleInOneHeadwayDist = new int[globalVariables.HeadwayDist];
+
+                    if (globalVariables.HeadwayDist > globalVariables.perHeadWayDistVehicle)
                     {
-                        if (globalVariables.TickCount == 0 || globalVariables.TickCount % 60 > 0)
+                        int singleVehicleDistributionSecond = (int)Math.Floor(globalVariables.HeadwayDist / globalVariables.perHeadWayDistVehicle);
+                        for (int i = 0; i < globalVariables.perHeadWayDistVehicle; i++)
                         {
-                            int vhLeft = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
-                            int rndNo = functions.RandomNumberGenerator(0, 2);
-                            int maxval = 0;
-
-                            if (vhLeft > 5)
-                            {
-                                maxval = 5;
-                            }
-                            else
-                            {
-                                maxval = functions.RandomNumberGenerator(0, vhLeft + 1);
-                            }
-
-                            if (rndNo == 0)
-                            {
-                                vehicleCounter = functions.RandomNumberGenerator(0, maxval + 1);
-                                globalVariables.VhGenerated[VhSession] += vehicleCounter;
-                            }
-                        }
-                        else
-                        {
-                            if (globalVariables.VhGenerated[VhSession] < globalVariables.VhAssignment[VhSession])
-                            {
-                                vehicleCounter = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
-                                globalVariables.VhGenerated[VhSession] += vehicleCounter;
-                            }
-
-                            globalVariables.VhSession += 1;
+                            var rnd = new Random().Next(0, singleVehicleDistributionSecond + 1);
+                           globalVariables.TotalVehicleInOneHeadwayDist[(i * singleVehicleDistributionSecond) + rnd] = 1;
                         }
                     }
                     else
                     {
-                        if (globalVariables.TickCount == 0 || globalVariables.TickCount % (60 * globalVariables.VhSessiongap) > 0)
+                        if (globalVariables.perHeadWayDistVehicle - globalVariables.HeadwayDist < 5)
                         {
-                            int vhLeft = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
-                            int rndNo = functions.RandomNumberGenerator(0, 2);
-                            int maxval = 0;
-
-                            if (vhLeft > 5)
+                            int zeroVehiclePlaceCount = (int)((globalVariables.HeadwayDist * 30) / 100);
+                            for (int i = 0; i < zeroVehiclePlaceCount; i++)
                             {
-                                maxval = 5;
-                            }
-                            else
-                            {
-                                maxval = functions.RandomNumberGenerator(0, vhLeft + 1);
-                            }
-
-                            if (rndNo == 0)
-                            {
-                                vehicleCounter = functions.RandomNumberGenerator(0, maxval + 1);
-                                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                                globalVariables.TotalVehicleInOneHeadwayDist[new Random().Next(0, globalVariables.HeadwayDist)] = 999;
                             }
                         }
-                        else
+                        int temp = (int)globalVariables.perHeadWayDistVehicle;
+                        for (int i = 0; i < globalVariables.HeadwayDist; i++)
                         {
-                            if (globalVariables.VhGenerated[VhSession] < globalVariables.VhAssignment[VhSession])
+                            if (globalVariables.TotalVehicleInOneHeadwayDist[i] != 999)
                             {
-                                vehicleCounter = globalVariables.VhAssignment[VhSession] - globalVariables.VhGenerated[VhSession];
-                                globalVariables.VhGenerated[VhSession] += vehicleCounter;
+                                globalVariables.TotalVehicleInOneHeadwayDist[i] = 1;
+                                temp--;
                             }
+                        }
+                        if (temp > 0)
+                        {
+                            int maxVhPerSecond = 2;
+                            while (temp > 0)
+                            {
+                                if (temp < 5 && globalVariables.perHeadWayDistVehicle > globalVariables.HeadwayDist * 2)
+                                {
+                                    //maxVhPerSecond = 2 is not possible in this case... 
+                                    //must be road is wide enough to accomodate 3 vh.
+                                    maxVhPerSecond = 3;
+                                }
 
-                            globalVariables.VhSession += 1;
+                                var rnd = new Random().Next(0, globalVariables.HeadwayDist);
+                                if (globalVariables.TotalVehicleInOneHeadwayDist[rnd] != 999
+                                    && globalVariables.TotalVehicleInOneHeadwayDist[rnd] != maxVhPerSecond)
+                                {
+                                    globalVariables.TotalVehicleInOneHeadwayDist[rnd] = globalVariables.TotalVehicleInOneHeadwayDist[rnd] + 1;
+                                    temp--;
+                                }
+                            }
                         }
 
+                        for (int i = 0; i < globalVariables.TotalVehicleInOneHeadwayDist.Length; i++)
+                        {
+                            if (globalVariables.TotalVehicleInOneHeadwayDist[i] == 999)
+                            {
+                                globalVariables.TotalVehicleInOneHeadwayDist[i] = 0;
+                            }
+                        }
+
+                        //}
                     }
                 }
+
+                /*-- Vehicle Generation Logic  End --*/
+                vehicleCounter = globalVariables.TotalVehicleInOneHeadwayDist[globalVariables.TickCount % globalVariables.HeadwayDist];
             }
             else if (totalvehicles > 1)
             {
@@ -1070,7 +1145,7 @@ namespace CAFT.Helper
         private void ProcessQueue()
         {
             //File.AppendAllText("Logs.txt", "===ProcessQueue_Start===\r\n");
-            //ProcessMidSignal();
+            ProcessMidSignal();
 
 
             ProcessNoiseProbabilty();
@@ -1187,6 +1262,9 @@ namespace CAFT.Helper
                     CalculateSaturationBottom(vehicle);
 
                     CalculateInterSectionDelay(vehicle);
+
+                    //CalculateBumpBeforeAfter(vehicle);
+
                 }
                 #endregion
             }
@@ -1206,6 +1284,62 @@ namespace CAFT.Helper
 
             //File.AppendAllText("Logs.txt", "===ProcessQueue_End===\r\n");
         }
+
+        public void CalculateBumpBeforeAfter(Vehicle vehicle)
+        {
+            int row = vehicle.CurrentPosition.Row;
+
+            if (row < globalVariables.bumpB60 
+                && row > globalVariables.bumpB40 && vehicle.bumpB60 == 0.0)
+            {
+                vehicle.bumpB60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < globalVariables.bumpB40 
+                && row > globalVariables.bumpB20 && vehicle.bumpB40 == 0.0)
+            {
+                vehicle.bumpB40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < globalVariables.bumpB20
+                && row > CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)) && vehicle.bumpB20 == 0.0)
+            {
+                vehicle.bumpB20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height))
+                && row > CaftSettings.Default.BumpLine && vehicle.OnBump == 0.0)
+            {
+                vehicle.OnBump = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < CaftSettings.Default.BumpLine
+                && row > globalVariables.bumpA20 && vehicle.bumpA20 == 0.0)
+            {
+                vehicle.bumpA20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < globalVariables.bumpA20 
+                && row > globalVariables.bumpA40 && vehicle.bumpA40 == 0.0)
+            {
+                vehicle.bumpA40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+
+            if (row < globalVariables.bumpA40
+                && row > globalVariables.bumpA60 && vehicle.bumpA60 == 0.0)
+            {
+                vehicle.bumpA60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                return;
+            }
+        }
+
+
 
         private void ProcessNoiseProbabilty()
         {
@@ -1525,9 +1659,19 @@ namespace CAFT.Helper
                         }
                     }
                     bool isVehicleMoved = false;
-                    if (CaftSettings.Default.bumpInclude || CaftSettings.Default.signalInclude)
+                    if (CaftSettings.Default.signalInclude)
                     {
-                        isVehicleMoved = CheckWhetherBumpOrSignal(vehicle);
+                        isVehicleMoved = CheckWhetherSignal(vehicle, CaftSettings.Default.BumpLine, globalVariables.LaneSignalOnFirst);
+                    }
+
+                    if (CaftSettings.Default.bumpInclude)
+                    {
+                        ProcessBump(vehicle);
+                    }
+
+                    if (CaftSettings.Default.signalIncludePed)
+                    {
+                        isVehicleMoved = CheckWhetherSignal(vehicle, CaftSettings.Default.SignalLinePed, !IsMidBlockRed);
                     }
 
 
@@ -1571,7 +1715,7 @@ namespace CAFT.Helper
                     vehicle.Properties.Status = VehicleStatus.InQueue;
                 }
                 //else if (false) // for overtaking 
-                else if (CheckLaneOvertake(vehicle)) // for overtaking
+                else if (CheckLaneOvertake(vehicle, CaftSettings.Default.signalIncludePed ? !IsMidBlockRed : globalVariables.LaneSignalOnFirst, CaftSettings.Default.signalIncludePed ? CaftSettings.Default.SignalLinePed : CaftSettings.Default.BumpLine)) // for overtaking
                 {
                     vehicle.IsOvertaken = true;
                     vehicle.Properties.Status = VehicleStatus.InProgress;
@@ -1589,11 +1733,21 @@ namespace CAFT.Helper
                     }
                     else
                     {
+                        bool isVehicleMoved = false;
                         if (CaftSettings.Default.bumpInclude)
                         {
-                            CheckWhetherBumpOrSignal(vehicle);
+                            ProcessBump(vehicle);
                         }
-                        MoveVehicle(vehicle);
+                        if (CaftSettings.Default.signalIncludePed)
+                        {
+                            isVehicleMoved = CheckWhetherSignal(vehicle, CaftSettings.Default.SignalLinePed, !IsMidBlockRed);
+                        }
+
+                        if (!isVehicleMoved)
+                        {
+                            MoveVehicle(vehicle);
+                        }
+
                     }
                 }
 
@@ -1660,6 +1814,8 @@ namespace CAFT.Helper
 
 
         }
+
+       
 
         private void partial_ProcessQueue_Top(Vehicle vehicle)
         {
@@ -1881,19 +2037,276 @@ namespace CAFT.Helper
         }
 
 
-        private bool CheckWhetherBumpOrSignal(Vehicle vehicle)
+        private void ProcessBump(Vehicle vehicle)
+        {
+            try
+            {
+                if (vehicle.CurrentPosition.Row < globalVariables.bumpB60
+                            && vehicle.CurrentPosition.Row > globalVariables.bumpB40)
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 57));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 42));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(55, 65));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 52));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(36, 39));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpB60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                    
+                }
+
+                if (vehicle.CurrentPosition.Row < globalVariables.bumpB40
+                 && vehicle.CurrentPosition.Row > globalVariables.bumpB20)
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(36, 40));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(34, 37));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 55));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(35, 37));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(31, 35));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpB40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+                if (vehicle.CurrentPosition.Row < globalVariables.bumpB20
+                    && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)))
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(25, 28));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(24, 29));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(25, 30));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(28, 30));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(21, 25));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpB20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+                //Consider it as on bump
+                if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine
+                 && vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)))
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(15, 16));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(14, 15));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(15, 17));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(13, 14));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(12, 14));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.OnBump = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+                if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine
+                 && vehicle.CurrentPosition.Row > globalVariables.bumpA20)
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(24, 26));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(20, 21));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(26, 32));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(18, 25));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(16, 20));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpA20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+                if (vehicle.CurrentPosition.Row < globalVariables.bumpA20
+                 && vehicle.CurrentPosition.Row > globalVariables.bumpA40)
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(33, 35));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(26, 28));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 24));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(29, 35));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(20, 23));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpA40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+                if (vehicle.CurrentPosition.Row < globalVariables.bumpA40
+                    && vehicle.CurrentPosition.Row > globalVariables.bumpA60)
+                {
+                    switch (vehicle.Properties.Type)
+                    {
+                        case VehicleType.TwoWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 41));
+                            break;
+                        case VehicleType.ThreeWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(28, 31));
+                            break;
+                        case VehicleType.FourWheel:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 54));
+                            break;
+                        case VehicleType.LCV1:
+                        case VehicleType.LCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(40, 45));
+                            break;
+                        case VehicleType.HCV1:
+                        case VehicleType.HCV2:
+                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(23, 25));
+                            break;
+                        default:
+                            break;
+                    }
+                    vehicle.bumpA60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
+                }
+
+            }
+            catch (Exception)
+            {
+                //Nothing to do for speed, keep speed as it is.
+            }
+        }
+
+        private bool ProcessPedestrianSignal(Vehicle vehicle)
+        {
+            if (vehicle.CurrentPosition.Row >= CaftSettings.Default.SignalLinePed)
+            {
+
+                if (IsMidBlockRed)
+                {
+                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.SignalLinePed + 60
+                        && vehicle.CurrentPosition.Row > CaftSettings.Default.SignalLinePed + 40)
+                    {
+                        vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(35, 40));
+                    }
+
+                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.SignalLinePed + 40
+                     && vehicle.CurrentPosition.Row > CaftSettings.Default.SignalLinePed + 20)
+                    {
+                        vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(20, 35));
+                    }
+
+                    if (vehicle.CurrentPosition.Row < CaftSettings.Default.SignalLinePed + 20)
+                    {
+                        vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(10, 20));
+                    }
+
+                    if ((bool)CaftSettings.Default.signalIncludePed)
+                    {
+                        if (vehicle.CurrentPosition.Row < CaftSettings.Default.SignalLinePed + 10)
+                        {
+                            vehicle.CurrentCellSpeed = 2;
+                        }
+                        if (vehicle.CurrentPosition.Row < CaftSettings.Default.SignalLinePed + 5)
+                        {
+                            vehicle.CurrentCellSpeed = 1;
+                        }
+                        if (vehicle.CurrentPosition.Row == CaftSettings.Default.SignalLinePed + 1)
+                        {
+                            vehicle.CurrentCellSpeed = 0;
+                            vehicle.Properties.Status = VehicleStatus.AtMidSignal;
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            return false;
+        }
+
+       
+        private bool CheckWhetherSignal(Vehicle vehicle, int _line, bool signalToCheck)
         {
             // Vehicle Speed should start decreasing as it reaches near Bump (10% of total Grid count)
             //decimal CellArndBump = Math.Round(Convert.ToDecimal(globalVariables.TotalGridRowCount) / Convert.ToDecimal(10), 0);
-
-            if (!globalVariables.LaneSignalOnFirst)
+            var line = _line;
+            if (!signalToCheck)
             {
-                if (vehicle.CurrentPosition.Row >= CaftSettings.Default.BumpLine
-                    && vehicle.CurrentPosition.Row - vehicle.CurrentCellSpeed < CaftSettings.Default.BumpLine + 30)
+                if (vehicle.CurrentPosition.Row >= line
+                    && vehicle.CurrentPosition.Row - vehicle.CurrentCellSpeed < line + 30)
                 {
-                    if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine)
+                    if (vehicle.CurrentPosition.Row > line)
                     {
-                        vehicle.CurrentCellSpeed = vehicle.CurrentPosition.Row - CaftSettings.Default.BumpLine;
+                        vehicle.CurrentCellSpeed = vehicle.CurrentPosition.Row - line;
                     REDUCESPEED4:
                         if (CheckNextCell(vehicle))
                         {
@@ -1903,7 +2316,7 @@ namespace CAFT.Helper
                         }
                         else
                         {
-                            if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine && vehicle.CurrentCellSpeed > 1)
+                            if (vehicle.CurrentPosition.Row > line && vehicle.CurrentCellSpeed > 1)
                             {
                                 vehicle.CurrentCellSpeed -= 1;
                                 goto REDUCESPEED4;
@@ -1911,7 +2324,7 @@ namespace CAFT.Helper
                         }
                         return true;
                     }
-                    else if (vehicle.CurrentPosition.Row == CaftSettings.Default.BumpLine)
+                    else if (vehicle.CurrentPosition.Row == line)
                     {
                         return true;
                     }
@@ -1964,9 +2377,9 @@ namespace CAFT.Helper
 
         private void ProcessMidSignal()
         {
-            if ((bool)CaftSettings.Default.signalInclude)
+            if ((bool)CaftSettings.Default.signalIncludePed)
             {
-                if (SignalTick > CaftSettings.Default.GreenSignalTime + CaftSettings.Default.RedSignalTime + CaftSettings.Default.AmberSignalTime)
+                if (SignalTick > CaftSettings.Default.SGreenSignalPed + CaftSettings.Default.SRedSignalPed + CaftSettings.Default.SAmberSignalPed)
                 {
                     //Reset SignalTick
                     SignalTick = 1;
@@ -1984,13 +2397,13 @@ namespace CAFT.Helper
                     }
                 }
 
-                if (SignalTick <= CaftSettings.Default.GreenSignalTime + CaftSettings.Default.AmberSignalTime)
+                if (SignalTick <= CaftSettings.Default.SGreenSignalPed + CaftSettings.Default.SAmberSignalPed)
                 {
                     //Green Mid Block Signal
                     IsMidBlockRed = false;
                 }
-                else if (SignalTick > CaftSettings.Default.GreenSignalTime + CaftSettings.Default.AmberSignalTime
-                    && SignalTick <= CaftSettings.Default.GreenSignalTime + CaftSettings.Default.AmberSignalTime + CaftSettings.Default.RedSignalTime)
+                else if (SignalTick > CaftSettings.Default.SGreenSignalPed + CaftSettings.Default.SAmberSignalPed
+                    && SignalTick <= CaftSettings.Default.SGreenSignalPed + CaftSettings.Default.SAmberSignalPed + CaftSettings.Default.SRedSignalPed)
                 {
                     //Red Mid Block Signal
                     IsMidBlockRed = true;
@@ -2201,7 +2614,7 @@ namespace CAFT.Helper
             return readyToMove;
         }
 
-        private bool CheckLaneOvertake(Vehicle vehicle)
+        private bool CheckLaneOvertake(Vehicle vehicle, bool signalToCheck, int signalLine)
         {
             //if (!globalVariables.LaneSignalOnFirst && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine)
             //{
@@ -2338,9 +2751,9 @@ namespace CAFT.Helper
 
                 //bool noNeedToIncreaseSpeed = false;
 
-                if (!globalVariables.LaneSignalOnFirst
-                    && vehicle.CurrentPosition.Row <= CaftSettings.Default.BumpLine
-                    && curRow > CaftSettings.Default.BumpLine)
+                if (!signalToCheck
+                    && vehicle.CurrentPosition.Row <= signalLine
+                    && curRow > signalLine)
                 {
                     /* First Signal is ON and vehicle is before the signal line
                      but due to overtaking logic, it is now going beyond the signal

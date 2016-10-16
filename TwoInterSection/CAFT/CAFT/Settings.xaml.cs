@@ -21,11 +21,12 @@ namespace CAFT
     /// </summary>
     public partial class Settings : Window
     {
-        public Settings()
+        public GlobalVariables globalVariables;
+        public Settings(GlobalVariables _globalVariables)
         {
             InitializeComponent();
 
-
+            this.globalVariables = _globalVariables;
 
             // Setting LaneSignal
             if (CaftSettings.Default.LaneSignal)
@@ -118,44 +119,83 @@ namespace CAFT
             txtSetting_Headway.Text = CaftSettings.Default.headway.ToString();
 
             //BumpLine
-            txtSetting_BumpLine.Text = CaftSettings.Default.BumpLine.ToString();
-            txtSetting_BumpArea.Text = CaftSettings.Default.bumpArea.ToString();
+            if (globalVariables.IsInterSection)
+            {
+                if (CaftSettings.Default.bumpInclude)
+                {
+                    txtSetting_OnlyBumpLine.Text = CaftSettings.Default.BumpLine.ToString();
+                    lblBumpInclude.Visibility = System.Windows.Visibility.Visible;
+                    lblBumpInclude1.Visibility = System.Windows.Visibility.Visible;
+                    txtSetting_OnlyBumpLine.Visibility = System.Windows.Visibility.Visible;
+                }
 
+
+                if (CaftSettings.Default.signalIncludePed)
+                {
+                    txtSetting_SignalLinePed.Text = CaftSettings.Default.SignalLinePed.ToString();
+                    txtSetting_SGreenTimePed.Text = CaftSettings.Default.SGreenSignalPed.ToString();
+                    txtSetting_SRedTimePed.Text = CaftSettings.Default.SRedSignalPed.ToString();
+                    txtSetting_SAmberTimePed.Text = CaftSettings.Default.SAmberSignalPed.ToString();
+
+                }
+
+                chkSignal.Visibility = System.Windows.Visibility.Collapsed;
+                CaftSettings.Default.signalInclude = false;
+            }
+            else
+            {
+                txtSetting_BumpLine.Text = CaftSettings.Default.BumpLine.ToString();
+                lblBumpInclude.Visibility = System.Windows.Visibility.Collapsed;
+                lblBumpInclude1.Visibility = System.Windows.Visibility.Collapsed;
+                txtSetting_OnlyBumpLine.Visibility = System.Windows.Visibility.Collapsed;
+
+                chkbump.Visibility = System.Windows.Visibility.Collapsed;
+                CaftSettings.Default.bumpInclude = false;
+            }
+            txtSetting_BumpArea.Text = CaftSettings.Default.bumpArea.ToString();
+                
             //DelayDistance
             txtSetting_DelayDistance.Text = CaftSettings.Default.DelayDistance.ToString();
 
             // include bump or not
             chkbump.IsChecked = CaftSettings.Default.bumpInclude;
+            chkSignalPed.IsChecked = CaftSettings.Default.signalIncludePed;
 
             //Percentage Distribution in Straight, Left and Right
             txtSetting_PercentStaright.Text = CaftSettings.Default.percentStraight.ToString();
             txtSetting_PercentRight.Text = CaftSettings.Default.percentRight.ToString();
             txtSetting_PercentLeft.Text = CaftSettings.Default.percentLeft.ToString();
 
-            //Or include signal
-            chkSignal.IsChecked = CaftSettings.Default.signalInclude;
-            txtSetting_SGreenTime.Text = CaftSettings.Default.GreenSignalTime.ToString();
-            txtSetting_SGreenTimeLeft.Text = CaftSettings.Default.GreenSignalTimeLeft.ToString();
-            txtSetting_SGreenTimeTop.Text = CaftSettings.Default.GreenSignalTimeTop.ToString();
-            txtSetting_SGreenTimeRight.Text = CaftSettings.Default.GreenSignalTimeRight.ToString();
-            //txtSetting_SRedTime.Text = CaftSettings.Default.RedSignalTime.ToString();
-            txtSetting_SAmberTime.Text = CaftSettings.Default.AmberSignalTime.ToString();
+            if (!globalVariables.IsInterSection)
+            {
+                //include signal -1
+                chkSignal.IsChecked = CaftSettings.Default.signalInclude;
+                txtSetting_SGreenTime.Text = CaftSettings.Default.GreenSignalTime.ToString();
+                txtSetting_SGreenTimeLeft.Text = CaftSettings.Default.GreenSignalTimeLeft.ToString();
+                txtSetting_SGreenTimeTop.Text = CaftSettings.Default.GreenSignalTimeTop.ToString();
+                txtSetting_SGreenTimeRight.Text = CaftSettings.Default.GreenSignalTimeRight.ToString();
+                //txtSetting_SRedTime.Text = CaftSettings.Default.RedSignalTime.ToString();
+                txtSetting_SAmberTime.Text = CaftSettings.Default.AmberSignalTime.ToString();
 
-            List<LegType> allLegs = new List<LegType>();
-            allLegs.Add(new LegType() { Id = 1, Text = "Bottom" });
-            allLegs.Add(new LegType() { Id = 2, Text = "Left" });
-            allLegs.Add(new LegType() { Id = 3, Text = "Top" });
-            allLegs.Add(new LegType() { Id = 4, Text = "Right" });
+                List<LegType> allLegs = new List<LegType>();
+                allLegs.Add(new LegType() { Id = 1, Text = "Bottom" });
+                allLegs.Add(new LegType() { Id = 2, Text = "Left" });
+                allLegs.Add(new LegType() { Id = 3, Text = "Top" });
+                allLegs.Add(new LegType() { Id = 4, Text = "Right" });
 
-            cmbFirstSignalLeg.ItemsSource = allLegs;
-            cmbFirstSignalLeg.DisplayMemberPath = "Text";
-            cmbFirstSignalLeg.SelectedItem = allLegs.Where(p => p.Id == CaftSettings.Default.SignalFirstLegSelection).First();
+                cmbFirstSignalLeg.ItemsSource = allLegs;
+                cmbFirstSignalLeg.DisplayMemberPath = "Text";
+                cmbFirstSignalLeg.SelectedItem = allLegs.Where(p => p.Id == CaftSettings.Default.SignalFirstLegSelection).First();
 
-
+            }
+            else
+            {
+                chkSignal.IsChecked = false;
+            }
 
             chkSignal_Checked(null, null);
-
-
+            chkbump_Click(null, null);
+            chkSignalPed_Checked(null, null);
 
             // Automatic Signal On - Off
             chkAutoSignal.IsChecked = CaftSettings.Default.AutoSignalInclude;
@@ -239,10 +279,16 @@ namespace CAFT
             double HCV2Width = 2.5, HCV2Height = 10.3;
 
 
-            if ((bool)chkbump.IsChecked && (bool)chkSignal.IsChecked)
+            //if ((bool)chkbump.IsChecked && (bool)chkSignal.IsChecked)
+            //{
+            //    CaftSettings.Default.bumpInclude = false;
+            //    //return;
+            //}
+
+            if((bool)chkbump.IsChecked && (bool)chkSignalPed.IsChecked && globalVariables.IsInterSection)
             {
-                CaftSettings.Default.bumpInclude = false;
-                //return;
+                MessageBox.Show("Please select either bump or pedestrian signal");
+                return;
             }
 
             // Setting LaneSignal
@@ -375,27 +421,55 @@ namespace CAFT
             // Headway
             CaftSettings.Default.headway = Convert.ToDecimal(txtSetting_Headway.Text);
 
+            
+
             //BumpLine
-            CaftSettings.Default.BumpLine = Convert.ToInt32(txtSetting_BumpLine.Text);
+            if (globalVariables.IsInterSection)
+            {
+
+                //Include Bump or not
+                CaftSettings.Default.bumpInclude = (bool)chkbump.IsChecked;
+                CaftSettings.Default.signalIncludePed = (bool)chkSignalPed.IsChecked;
+
+
+                if (CaftSettings.Default.bumpInclude)
+                {
+                    CaftSettings.Default.BumpLine = Convert.ToInt32(txtSetting_OnlyBumpLine.Text);
+                }
+
+                if (CaftSettings.Default.signalIncludePed)
+                {
+                    CaftSettings.Default.SignalLinePed = Convert.ToInt32(txtSetting_SignalLinePed.Text);
+                    CaftSettings.Default.SGreenSignalPed = Convert.ToInt32(txtSetting_SGreenTimePed.Text);
+                    CaftSettings.Default.SRedSignalPed = Convert.ToInt32(txtSetting_SRedTimePed.Text);
+                    CaftSettings.Default.SAmberSignalPed = Convert.ToInt32(txtSetting_SAmberTimePed.Text);
+                }
+            }
+            else
+            {
+                CaftSettings.Default.BumpLine = Convert.ToInt32(txtSetting_BumpLine.Text);
+            }
+            
             CaftSettings.Default.bumpArea = Convert.ToInt32(txtSetting_BumpArea.Text);
 
             //DelayDistance
             CaftSettings.Default.DelayDistance = Convert.ToInt16(txtSetting_DelayDistance.Text);
 
-            //Include Bump or not
-            CaftSettings.Default.bumpInclude = (bool)chkbump.IsChecked;
+            
 
-            //or Include Signal or not
-            CaftSettings.Default.signalInclude = (bool)chkSignal.IsChecked;
-            CaftSettings.Default.GreenSignalTime = Convert.ToInt16(txtSetting_SGreenTime.Text);
-            CaftSettings.Default.GreenSignalTimeLeft = Convert.ToInt16(txtSetting_SGreenTimeLeft.Text);
-            CaftSettings.Default.GreenSignalTimeTop = Convert.ToInt16(txtSetting_SGreenTimeTop.Text);
-            CaftSettings.Default.GreenSignalTimeRight = Convert.ToInt16(txtSetting_SGreenTimeRight.Text);
-            //CaftSettings.Default.RedSignalTime = Convert.ToInt16(txtSetting_SRedTime.Text);
-            CaftSettings.Default.AmberSignalTime = Convert.ToInt16(txtSetting_SAmberTime.Text);
+            if (!globalVariables.IsInterSection)
+            {
+                //or Include Signal or not
+                CaftSettings.Default.signalInclude = (bool)chkSignal.IsChecked;
+                CaftSettings.Default.GreenSignalTime = Convert.ToInt16(txtSetting_SGreenTime.Text);
+                CaftSettings.Default.GreenSignalTimeLeft = Convert.ToInt16(txtSetting_SGreenTimeLeft.Text);
+                CaftSettings.Default.GreenSignalTimeTop = Convert.ToInt16(txtSetting_SGreenTimeTop.Text);
+                CaftSettings.Default.GreenSignalTimeRight = Convert.ToInt16(txtSetting_SGreenTimeRight.Text);
+                //CaftSettings.Default.RedSignalTime = Convert.ToInt16(txtSetting_SRedTime.Text);
+                CaftSettings.Default.AmberSignalTime = Convert.ToInt16(txtSetting_SAmberTime.Text);
 
-            CaftSettings.Default.SignalFirstLegSelection = ((LegType)cmbFirstSignalLeg.SelectedItem).Id;
-
+                CaftSettings.Default.SignalFirstLegSelection = ((LegType)cmbFirstSignalLeg.SelectedItem).Id;
+            }
             //Percentage Distribution in Straight, Left and Right
             CaftSettings.Default.percentStraight = Convert.ToInt16(txtSetting_PercentStaright.Text);
             CaftSettings.Default.percentRight = Convert.ToInt16(txtSetting_PercentRight.Text);
@@ -498,6 +572,40 @@ namespace CAFT
                 txtSetting_vhRangeMin.Visibility = Visibility.Collapsed;
                 txtSetting_VhRangeMax.Visibility = Visibility.Collapsed;
                 txtSetting_VhRangeTime.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void chkbump_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)chkbump.IsChecked)
+            {
+                lblBumpInclude.Visibility = System.Windows.Visibility.Visible;
+                lblBumpInclude1.Visibility = System.Windows.Visibility.Visible;
+                txtSetting_OnlyBumpLine.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                lblBumpInclude.Visibility = System.Windows.Visibility.Collapsed;
+                lblBumpInclude1.Visibility = System.Windows.Visibility.Collapsed;
+                txtSetting_OnlyBumpLine.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
+
+        private void chkSignalPed_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((bool)chkSignalPed.IsChecked)
+            {
+                stSignalPed.Visibility = System.Windows.Visibility.Visible;
+                lblSignalIncludePed.Visibility = System.Windows.Visibility.Visible;
+                lblSignalIncludePed1.Visibility = System.Windows.Visibility.Visible;
+                txtSetting_SignalLinePed.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                stSignalPed.Visibility = System.Windows.Visibility.Collapsed;
+                lblSignalIncludePed.Visibility = System.Windows.Visibility.Collapsed;
+                lblSignalIncludePed1.Visibility = System.Windows.Visibility.Collapsed;
+                txtSetting_SignalLinePed.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 

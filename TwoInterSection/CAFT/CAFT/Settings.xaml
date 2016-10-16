@@ -67,8 +67,9 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
                                 <Label Content="Noise Probability Factor" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto"/>
-                                <TextBox Name="txtSetting_NoiseProbFactor" Width="50"/>
-                                <Label Content="(1 to 100)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"/>
+                                <TextBox Name="txtSetting_NoiseProbFactor" Visibility="Collapsed" Width="50"/>
+                                <TextBox Name="txtSetting_NoiseProbFactorFake" IsEnabled="False" Text="0.49" Width="50"/>
+                                <Label Content="(1 to 100)" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top" Width="70"/>
                             </StackPanel>
                             <StackPanel>
                                 <Rectangle Height="1" Width="550" Fill="Black" ></Rectangle>
@@ -79,13 +80,13 @@
                                     <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
                                         <Label Content="Signal - 1" FontSize="20"></Label>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" Name="pnlCorridorOnly_IncludeSignal">
                                         <CheckBox x:Name="chkSignal" Click="chkSignal_Checked" Content="Include Signal - 1" Margin="0 7 0 0"/>
                                         <Label x:Name="lblFirstSignalLeg" Content="Select Leg for Start of Signal " Margin="20 0 5 0"></Label>
                                         <ComboBox x:Name="cmbFirstSignalLeg"></ComboBox>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
-                                        <Label Name="lblSetting_BumpLine" Content="Row No at Signal-1 needs to be placed"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="230"/>
+                                        <Label Name="lblSetting_BumpLine" Content="Row No at which Signal-1 needs to be placed"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="230"/>
                                         <TextBox Name="txtSetting_BumpLine" Width="40"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -116,7 +117,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                    
+
                                     <!-- ==== Second Signal Start == -->
                                     <StackPanel>
                                         <Rectangle Height="1" Width="500" Fill="Black" ></Rectangle>
@@ -193,28 +194,40 @@
                                 <Label Content="  at"></Label>
                                 <TextBox Name="txtSetting_VhRangeTime" Width="140" Margin="10 7 0 0"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" Name="pnlInterSection_IncludeBump">
                                 <Label Content="Include Bump" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
-                                <CheckBox x:Name="chkbump" Margin="0 7 0 0"/>
-                                <Label Content="     /   "></Label>
-                                <Label Content="Include Signal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
-                                <!--<CheckBox x:Name="chkSignal" Click="chkSignal_Checked" Margin="0 7 0 0"/>-->
+                                <CheckBox x:Name="chkbump" Margin="0 7 0 0" Click="chkbump_Click"/>
+                                <!--For txtSetting_BumpLine-->
+                                <Label Content="     @   " Name="lblBumpInclude"></Label>
+                                <TextBox Name="txtSetting_OnlyBumpLine" Width="50"/>
+                                <Label Content=" Row" Name="lblBumpInclude1"></Label>
                             </StackPanel>
-
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSGreen" Visibility="Collapsed">
-                                    <Label Content="Signal Green Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
-                                    <!--<TextBox Name="txtSetting_SGreenTime" Width="30"/>-->
+                            <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True">
+                                <Label Content="Or" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stChkIncludeSignalPed" Visibility="Visible">
+                                    <Label Content="Include Pedestrian Signal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                    <CheckBox x:Name="chkSignalPed" Click="chkSignalPed_Checked" Margin="0 7 0 0"/>
+                                    <Label Content="     @   " Name="lblSignalIncludePed"></Label>
+                                    <TextBox Name="txtSetting_SignalLinePed" Width="50"/>
+                                    <Label Content=" Row" Name="lblSignalIncludePed1"></Label>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSRed" Visibility="Collapsed">
-                                    <Label Content="Signal Red Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
-                                    <!--<TextBox Name="txtSetting_SRedTime" Width="30"/>-->
+                                
+                                <StackPanel Orientation="Horizontal" Name="stSignalPed">
+                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSGreen" Visibility="Visible">
+                                        <Label Content="Signal Green Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                        <TextBox Name="txtSetting_SGreenTimePed" Width="30"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSRed" Visibility="Visible">
+                                        <Label Content="Signal Red Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto"/>
+                                        <TextBox Name="txtSetting_SRedTimePed" Width="30"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSAmber" Visibility="Visible">
+                                        <Label Content="Signal Amber Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                                        <TextBox Name="txtSetting_SAmberTimePed" Width="30"/>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="10" d:IsLocked="True" x:Name="stSAmber" Visibility="Collapsed">
-                                    <Label Content="Signal Amber Time (sec)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
-                                    <!--<TextBox Name="txtSetting_SAmberTime" Width="30"/>-->
-                                </StackPanel>
-
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">

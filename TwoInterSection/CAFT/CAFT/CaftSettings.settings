@@ -279,7 +279,7 @@
       <Value Profile="(Default)">80</Value>
     </Setting>
     <Setting Name="NoiseProbFactor" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">49</Value>
     </Setting>
     <Setting Name="CrossRoadSignalAmberTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
@@ -295,6 +295,24 @@
     </Setting>
     <Setting Name="SignalFirstLegSelection" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="SecondsForHeadwayDist" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="signalIncludePed" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SGreenSignalPed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="SRedSignalPed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="SAmberSignalPed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="SignalLinePed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">150</Value>
     </Setting>
   </Settings>
 </SettingsFile>

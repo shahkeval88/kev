@@ -10,7 +10,14 @@
                 <Label Content="" x:Name="lblSpacePerTime" Foreground="Green"></Label>
             </StackPanel>
             <Line Height="5"></Line>
-            <StackPanel Orientation="Vertical" Visibility="Collapsed">
+            <StackPanel Orientation="Vertical" Name="pnlInterSection_Summary">
+                
+                <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
+                    <Button x:Name="btnBumpData" Width="100" Content="Bump Data" Click="btnBumpData_Click"></Button>
+                    <Label Content="" x:Name="lblBumpData" Foreground="Green"></Label>
+                </StackPanel>
+                <Line Height="5"></Line>
+                
                 <StackPanel Margin="50 0 0 10" Orientation="Horizontal">
                     <Button x:Name="btnSpeedPerTime" Width="100" Content="Speed vs Time" Click="btnSpeedPerTime_Click"></Button>
                     <Label Content="" x:Name="lblSpeedPerTime" Foreground="Green"></Label>

@@ -104,5 +104,14 @@ namespace CAFT.Models
 
         public bool IsNoisy { get; set; }
 
+
+        public double OnBump { get; set; }
+        public double bumpB20 { get; set; }
+        public double bumpB40 { get; set; }
+        public double bumpB60 { get; set; }
+        public double bumpA20 { get; set; }
+        public double bumpA40 { get; set; }
+        public double bumpA60 { get; set; }
+
     }
 }
