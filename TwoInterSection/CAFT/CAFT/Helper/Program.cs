@@ -2044,28 +2044,7 @@ namespace CAFT.Helper
                 if (vehicle.CurrentPosition.Row < globalVariables.bumpB60
                             && vehicle.CurrentPosition.Row > globalVariables.bumpB40)
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 57));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 42));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(55, 65));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 52));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(36, 39));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpB60(vehicle.Properties.Type);
                     vehicle.bumpB60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                     
                 }
@@ -2073,56 +2052,14 @@ namespace CAFT.Helper
                 if (vehicle.CurrentPosition.Row < globalVariables.bumpB40
                  && vehicle.CurrentPosition.Row > globalVariables.bumpB20)
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(36, 40));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(34, 37));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 55));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(35, 37));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(31, 35));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpB40(vehicle.Properties.Type);
                     vehicle.bumpB40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 
                 if (vehicle.CurrentPosition.Row < globalVariables.bumpB20
                     && vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)))
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(25, 28));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(24, 29));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(25, 30));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(28, 30));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(21, 25));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpB20(vehicle.Properties.Type);
                     vehicle.bumpB20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 
@@ -2130,112 +2067,28 @@ namespace CAFT.Helper
                 if (vehicle.CurrentPosition.Row > CaftSettings.Default.BumpLine
                  && vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine + ((int)Math.Ceiling(3 / CaftSettings.Default.CellSize_Height)))
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(15, 16));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(14, 15));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(15, 17));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(13, 14));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(12, 14));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedOnBump(vehicle.Properties.Type);
                     vehicle.OnBump = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 
                 if (vehicle.CurrentPosition.Row < CaftSettings.Default.BumpLine
                  && vehicle.CurrentPosition.Row > globalVariables.bumpA20)
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(24, 26));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(20, 21));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(26, 32));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(18, 25));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(16, 20));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpA20(vehicle.Properties.Type);
                     vehicle.bumpA20 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 
                 if (vehicle.CurrentPosition.Row < globalVariables.bumpA20
                  && vehicle.CurrentPosition.Row > globalVariables.bumpA40)
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(33, 35));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(26, 28));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 24));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(29, 35));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(20, 23));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpA40(vehicle.Properties.Type);
                     vehicle.bumpA40 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 
                 if (vehicle.CurrentPosition.Row < globalVariables.bumpA40
                     && vehicle.CurrentPosition.Row > globalVariables.bumpA60)
                 {
-                    switch (vehicle.Properties.Type)
-                    {
-                        case VehicleType.TwoWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(38, 41));
-                            break;
-                        case VehicleType.ThreeWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(28, 31));
-                            break;
-                        case VehicleType.FourWheel:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(45, 54));
-                            break;
-                        case VehicleType.LCV1:
-                        case VehicleType.LCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(40, 45));
-                            break;
-                        case VehicleType.HCV1:
-                        case VehicleType.HCV2:
-                            vehicle.CurrentCellSpeed = functions.KmToCell(globalVariables.RndmNo.Next(23, 25));
-                            break;
-                        default:
-                            break;
-                    }
+                    vehicle.CurrentCellSpeed = functions.SpeedBumpA60(vehicle.Properties.Type);
                     vehicle.bumpA60 = ((((double)CaftSettings.Default.CellSize_Height * vehicle.CurrentCellSpeed) * 3600) / 1000);
                 }
 

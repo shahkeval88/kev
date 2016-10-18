@@ -23,13 +23,14 @@ namespace CAFT
     {
         int extraGridRowCount;
         public GlobalVariables globalVariables;
+        Helper.Functions functions;
         public Summary(int _extraGridRowCount, GlobalVariables _globalVariables)
         {
             InitializeComponent();
             InitializeExcel();
             this.extraGridRowCount = _extraGridRowCount;
             this.globalVariables = _globalVariables;
-
+            functions = new Helper.Functions(this.globalVariables);
             if (globalVariables.IsInterSection)
             {
                 pnlInterSection_Summary.Visibility = System.Windows.Visibility.Visible;
@@ -1362,11 +1363,23 @@ namespace CAFT
             {
                 MyExcel.Cells[row, 2] = temp.Sum(p => p.bumpB60) / temp.Count();
             }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 2] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpB60(firstVh.Properties.Type)) * 3600) / 1000);
+            }
 
             temp = listOfVh.Where(p => p.bumpB40 > 0);
             if (temp != null && temp.Count() > 0)
             {
                 MyExcel.Cells[row, 3] = temp.Sum(p => p.bumpB40) / temp.Count();
+            }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 3] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpB40(firstVh.Properties.Type)) * 3600) / 1000); 
             }
 
             temp = listOfVh.Where(p => p.bumpB20 > 0);
@@ -1374,11 +1387,23 @@ namespace CAFT
             {
                 MyExcel.Cells[row, 4] = temp.Sum(p => p.bumpB20) / temp.Count();
             }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 4] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpB20(firstVh.Properties.Type)) * 3600) / 1000);
+            }
 
             temp = listOfVh.Where(p => p.OnBump > 0);
             if (temp != null && temp.Count() > 0)
             {
                 MyExcel.Cells[row, 5] = temp.Sum(p => p.OnBump) / temp.Count();
+            }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 5] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedOnBump(firstVh.Properties.Type)) * 3600) / 1000);
             }
 
             temp = listOfVh.Where(p => p.bumpA20 > 0);
@@ -1386,17 +1411,35 @@ namespace CAFT
             {
                 MyExcel.Cells[row, 6] = temp.Sum(p => p.bumpA20) / temp.Count();
             }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 6] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpA20(firstVh.Properties.Type)) * 3600) / 1000);
+            }
 
             temp = listOfVh.Where(p => p.bumpA40 > 0);
             if (temp != null && temp.Count() > 0)
             {
                 MyExcel.Cells[row, 7] = temp.Sum(p => p.bumpA40) / temp.Count();
             }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 7] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpA40(firstVh.Properties.Type)) * 3600) / 1000);
+            }
 
             temp = listOfVh.Where(p => p.bumpA60 > 0);
             if (temp != null && temp.Count() > 0)
             {
                 MyExcel.Cells[row, 8] = temp.Sum(p => p.bumpA60) / temp.Count();
+            }
+            else if (listOfVh != null && listOfVh.Count > 0)
+            {
+                //We have vehicles but somehow it is not logged between this range, so need to assign random range speed, that could be there in actual program
+                var firstVh = listOfVh.First();
+                MyExcel.Cells[row, 8] = ((((double)CaftSettings.Default.CellSize_Height * functions.SpeedBumpA60(firstVh.Properties.Type)) * 3600) / 1000);
             }
         }
 
