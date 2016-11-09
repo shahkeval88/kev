@@ -2190,6 +2190,28 @@ namespace CAFT.Helper
                     //}
                 }
             }
+            else
+            {
+                //Vehicle Bunch going at slow speed after signal on...
+                //logic to speed up vehicle and move it fast
+                if (CaftSettings.Default.signalInclude || CaftSettings.Default.signalIncludePed)
+                {
+                    if (vehicle.CurrentPosition.Row < line
+                        && vehicle.CurrentPosition.Row > line - (globalVariables.TwoLaneColumnCount * 2)
+                        && CheckNextCell(vehicle))
+                    {
+                        if (CanAccelerate(vehicle))
+                        {
+                            //vehicle.CurrentCellSpeed += 1;
+                            // Speed of the vehicle is increased after acceleration
+                            DoAcceleration(vehicle);
+                            MoveVehicle(vehicle);
+                            return true;
+                        }
+                    }
+                }
+
+            }
 
             return false;
         }

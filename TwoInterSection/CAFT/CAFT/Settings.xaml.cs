@@ -144,6 +144,7 @@ namespace CAFT
             }
             else
             {
+                //This is corridor section
                 txtSetting_BumpLine.Text = CaftSettings.Default.BumpLine.ToString();
                 lblBumpInclude.Visibility = System.Windows.Visibility.Collapsed;
                 lblBumpInclude1.Visibility = System.Windows.Visibility.Collapsed;
@@ -151,6 +152,7 @@ namespace CAFT
 
                 chkbump.Visibility = System.Windows.Visibility.Collapsed;
                 CaftSettings.Default.bumpInclude = false;
+                CaftSettings.Default.signalIncludePed = false;
             }
             txtSetting_BumpArea.Text = CaftSettings.Default.bumpArea.ToString();
                 
