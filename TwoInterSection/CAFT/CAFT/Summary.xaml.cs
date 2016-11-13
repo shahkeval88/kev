@@ -40,6 +40,11 @@ namespace CAFT
             {
                 pnlInterSection_Summary.Visibility = System.Windows.Visibility.Collapsed;
             }
+
+            if (!CaftSettings.Default.bumpInclude)
+            {
+                stBumpData.Visibility = System.Windows.Visibility.Collapsed;
+            }
         }
 
         MSExcel.Application MyExcel;
