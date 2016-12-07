@@ -15,6 +15,7 @@ namespace CAFT.Models
     {
         public double CellDistance { get; set; }
         public int time { get; set; }
+        public double speed { get; set; }
     }
 
     public class DensityPerSpeed

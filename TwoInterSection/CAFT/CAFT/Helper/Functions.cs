@@ -232,5 +232,44 @@ namespace CAFT.Helper
                     return KmToCell(globalVariables.RndmNo.Next(38, 41));
             }
         }
+
+        internal string GetVehicleShortType(VehicleType vehicleType)
+        {
+            string value = "";
+            switch (vehicleType)
+            {
+                case VehicleType.TwoWheel:
+                    value = "2W";
+                    break;
+                case VehicleType.ThreeWheel:
+                    value = "3W";
+                    break;
+                case VehicleType.FourWheel:
+                    value = "4W";
+                    break;
+                case VehicleType.LCV1:
+                    value = "LCV1";
+                    break;
+                case VehicleType.LCV2:
+                    value = "LCV2";
+                    break;
+                case VehicleType.HCV1:
+                    value = "HCV1";
+                    break;
+                case VehicleType.HCV2:
+                    value = "HCV2";
+                    break;
+                default:
+                    value = "";
+                    break;
+            }
+
+            return value;
+        }
+
+        internal double GetSpeedInKmPerHr(int cellSpeed)
+        {
+            return ((((double)CaftSettings.Default.CellSize_Height * cellSpeed) * 3600) / 1000);
+        }
     }
 }

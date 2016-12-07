@@ -2351,6 +2351,11 @@ namespace CAFT.Helper
                 default:
                     break;
             }
+
+            if (vehicle.CurrentCellSpeed > vehicle.Properties.MaxCellSpeed)
+            {
+                vehicle.CurrentCellSpeed = vehicle.Properties.MaxCellSpeed;
+            }
         }
 
 
@@ -2679,7 +2684,7 @@ namespace CAFT.Helper
 
 
                 // Increase speed of the vehicle
-                if (vehicle.Properties.MaxCellSpeed != vehicle.CurrentCellSpeed)// && !noNeedToIncreaseSpeed)
+                if ((vehicle.CurrentCellSpeed + 2) < vehicle.Properties.MaxCellSpeed)// && !noNeedToIncreaseSpeed)
                 {
                     vehicle.CurrentCellSpeed += 1;
                 }
@@ -3548,7 +3553,8 @@ namespace CAFT.Helper
                     temp.Add(new SpacePerTime()
                     {
                         time = globalVariables.TickCount,
-                        CellDistance = cellDist
+                        CellDistance = cellDist,
+                        speed = functions.GetSpeedInKmPerHr(vehicle.CurrentCellSpeed)
                     });
                 }
                 else
@@ -3566,7 +3572,8 @@ namespace CAFT.Helper
                     temp.Add(new SpacePerTime()
                     {
                         time = globalVariables.TickCount,
-                        CellDistance = cellDist
+                        CellDistance = cellDist,
+                        speed = functions.GetSpeedInKmPerHr(vehicle.CurrentCellSpeed)
                     });
 
                     globalVariables.spacePerTime.Add(vehicle.Id, temp);

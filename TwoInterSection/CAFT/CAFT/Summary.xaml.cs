@@ -351,7 +351,9 @@ namespace CAFT
                 List<SpacePerTime> temp = globalVariables.spacePerTime[item.Key];
                 if (temp != null)
                 {
-                    MyExcel.Cells[1, iV + 2] = "vh" + item.Key.ToString();
+                    //MyExcel.Cells[1, iV + 2] = "vh" + item.Key.ToString();
+                    var vhcl = globalVariables.VehicleList.Where(p => p.Id == item.Key).FirstOrDefault();
+                    MyExcel.Cells[1, iV + 2] = vhcl != null ? functions.GetVehicleShortType(vhcl.Properties.Type) : "vh" + item.Key.ToString();
                     int iT = 0;
                     foreach (var item1 in temp)
                     {
@@ -386,9 +388,54 @@ namespace CAFT
             chartPage.SetSourceData(chartRange, MSExcel.XlRowCol.xlColumns);
             chartPage.ChartType = MSExcel.XlChartType.xlLine;
 
+            SpacePerTimeWithSpeed();
 
             lblSpacePerTime.Content = "Chart for " + sheetName + " is generated";
             //chartSpacePTime.DataContext = globalVariables.spacePerTime;
+        }
+
+        private void SpacePerTimeWithSpeed()
+        {
+            string sheetName = "SpacePerTimeWithSpeed";
+            var tempS = MyExcel.ActiveWorkbook.Sheets.Cast<MSExcel.Worksheet>().Where(p => p.Name == sheetName).FirstOrDefault();
+            if (tempS == null)
+            {
+                tempS = MyExcel.ActiveWorkbook.Sheets.Add();
+                tempS.Name = sheetName;
+            }
+            else
+            {
+                tempS.Activate();
+            }
+
+            MyExcel.Cells[1, 1] = "Time";
+
+            for (int i = 0; i < globalVariables.TickCount; i++)
+            {
+                MyExcel.Cells[i + 2, 1] = "t" + (i + 1).ToString();
+            }
+
+            int iV = 0;
+            foreach (var item in globalVariables.spacePerTime)
+            {
+                List<SpacePerTime> temp = globalVariables.spacePerTime[item.Key];
+                if (temp != null)
+                {
+                    //MyExcel.Cells[1, iV + 2] = "vh" + item.Key.ToString();
+                    var vhcl = globalVariables.VehicleList.Where(p => p.Id == item.Key).FirstOrDefault();
+                    MyExcel.Cells[1, (iV * 2) + 2] = vhcl != null ? functions.GetVehicleShortType(vhcl.Properties.Type) : "vh" + item.Key.ToString();
+                    int iT = 0;
+                    foreach (var item1 in temp)
+                    {
+                        MyExcel.Cells[item1.time + 2, (iV * 2) + 2] = item1.CellDistance.ToString();
+                        MyExcel.Cells[item1.time + 2, (iV * 2) + 3] = item1.speed.ToString();
+                        iT++;
+                    }
+                }
+                iV++;
+
+                if (iV == 255) break;
+            }
         }
 
         private void btnSpeedPerTime_Click(object sender, RoutedEventArgs e)
